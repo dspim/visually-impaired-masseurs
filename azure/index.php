@@ -40,7 +40,7 @@
     $db = "D4SG_VIM";
     // Connect to database.
     try {
-        $conn = new PDO( "mysql:host=$host;dbname=$db", $user, $pwd);
+        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pwd);
         $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
     }
     catch(Exception $e){
@@ -67,7 +67,7 @@
         $stmt->bindValue(4, $not_assigned);
         $stmt->bindValue(5, $hid);
         $stmt->bindValue(6, $guest_num);
-        $stmt->bindValue(7, $sid);        
+        $stmt->bindValue(7, $sid);
         // $stmt->bindValue(3, $date);
         $stmt->execute();
     }
@@ -78,8 +78,8 @@
     }
     // Retrieve data
     $sql_select = "SELECT w.*, h.hname, m.mname, s.sname
-    				FROM worklog as w 
-    					LEFT JOIN helper as h ON w.hid = h.hid 
+    				FROM worklog as w
+    					LEFT JOIN helper as h ON w.hid = h.hid
     						LEFT JOIN masseur as m ON w.mid = m.mid
     							LEFT JOIN shop as s ON w.sid = s.sid";
     $stmt = $conn->query($sql_select);

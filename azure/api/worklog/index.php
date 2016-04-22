@@ -1,5 +1,5 @@
-<?php 
-header("Content-type: text/json; charset=utf-8"); 
+<?php
+header("Content-type: text/json; charset=utf-8");
 
     $host = "ap-cdbr-azure-east-c.cloudapp.net";
     $user = "b4aa79b2c77ddc";
@@ -7,7 +7,7 @@ header("Content-type: text/json; charset=utf-8");
     $db = "D4SG_VIM";
     // Connect to database.
     try {
-        $conn = new PDO( "mysql:host=$host;dbname=$db", $user, $pwd);
+        $conn = new PDO( "mysql:host=$host;dbname=$db;charset=utf8", $user, $pwd);
         $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
     }
     catch(Exception $e){
@@ -19,8 +19,8 @@ header("Content-type: text/json; charset=utf-8");
     switch ($method) {
         case 'GET':
             $sql_select = "SELECT w.*, h.hname, m.mname, s.sname
-                    FROM worklog as w 
-                        LEFT JOIN helper as h ON w.hid = h.hid 
+                    FROM worklog as w
+                        LEFT JOIN helper as h ON w.hid = h.hid
                             LEFT JOIN masseur as m ON w.mid = m.mid
                                 LEFT JOIN shop as s ON w.sid = s.sid";
 
@@ -33,16 +33,16 @@ header("Content-type: text/json; charset=utf-8");
 
             if(count($registrants) > 0) {
                 foreach($registrants as $registrant) {
-                    $obj = array('wid' => intval($registrant['wid']), 'sname' => $registrant['sname'], 'log_date' => $registrant['log_date'], 'sid' => $registrant['sid'], 
+                    $obj = array('wid' => intval($registrant['wid']), 'sname' => $registrant['sname'], 'log_date' => $registrant['log_date'], 'sid' => $registrant['sid'],
                                  'mid' => intval($registrant['mid']), 'mname' => $registrant['mname'], 'assigned' => intval($registrant['assigned']),
-                                 'not_assigned' => intval($registrant['not_assigned']), 'guest_num' => intval($registrant['guest_num']), 
+                                 'not_assigned' => intval($registrant['not_assigned']), 'guest_num' => intval($registrant['guest_num']),
                                  'hid' => intval($registrant['hid']), 'hname' => $registrant['hname']);
                     array_push($output, $obj);
                 }
             }
             echo json_encode($output, JSON_UNESCAPED_UNICODE);
             break;
-        
+
         case 'POST':
             if(!empty($_POST)) {
                 try {
@@ -64,7 +64,7 @@ header("Content-type: text/json; charset=utf-8");
                     $stmt->bindValue(4, $not_assigned);
                     $stmt->bindValue(5, $hid);
                     $stmt->bindValue(6, $guest_num);
-                    $stmt->bindValue(7, $sid);        
+                    $stmt->bindValue(7, $sid);
                     // $stmt->bindValue(3, $date);
                     $stmt->execute();
                 }
@@ -80,5 +80,5 @@ header("Content-type: text/json; charset=utf-8");
             echo "{\"Result\":\"ERROR\"}";
             break;
     }
-    
+
  ?>
