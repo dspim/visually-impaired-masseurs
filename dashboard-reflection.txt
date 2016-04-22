@@ -28,13 +28,13 @@ A6.
 		4) Get the summary of assigned, not-assigned service-time and the number of the guests, or even group by shop or other data items, or a specific period of time
 
 	2. Work-log group by helper
-	    1) Get to whom a helper helps, and even group by masseur
+		1) Get to whom a helper helps, and even group by masseur
 		2) Get where the helper helps the masseurs, and even group by shop
 		3) Get how many times the helper appears in a specific period of time, and even group by each period
 		4) Get the summary of the salary in a work-log which contains the helper
 
     3. Work-log group by shop
-	    1) Get which masseurs works here, and even group by masseur
+		1) Get which masseurs works here, and even group by masseur
 		2) Get which helpers works here, and even group by helper
 		3) Get how many work-logs are produced here in a specific period of time, and even group by each period
 		4) Get the summary of assigned, not-assigned service-time and the number of the guests, or even group by a specific period of time
@@ -46,8 +46,8 @@ A6.
 
 Q7. What are the useful comparisons that will allow the dashboard’s users to see the data items listed above in context? For instance, if one of the measures that your dashboard displays is revenue, do you have targets or historical data that could also be displayed to make current revenue more meaningful?
 A7.
-    1. Compare the number of assigned service-time and not-assigned service-time (then calculate the income), and the number of guests
-        1) Between masseurs
+	1. Compare the number of assigned service-time and not-assigned service-time (then calculate the income), and the number of guests
+        	1) Between masseurs
 		2) Between helpers
 		3) Between shops
 		4) Between specific periods of time
@@ -56,21 +56,21 @@ A7.
 		2) Between shops
 		3) Between specific periods of time
 	3. From 1, but of a specific helper
-	    1) Between masseurs
-	    2) Between shops
-	    3) Between specific periods of time
+		1) Between masseurs
+		2) Between shops
+		3) Between specific periods of time
 	4. From 1, but of a specific shop
-	    1) Between masseurs
-	    2) Between helpers
-	    3) Between specific periods of time
+		1) Between masseurs
+		2) Between helpers
+		3) Between specific periods of time
 	5. From 1, but of a specific period of time
-	    1) Between masseurs
-	    2) Between helpers
-	    3) Between shops
+		1) Between masseurs
+		2) Between helpers
+		3) Between shops
 
 	And so on....
 
 	Formula:
-        COMPARE {assigned service-time, not-assigned service-time, guests number} (select one or more)
+        	COMPARE {assigned service-time, not-assigned service-time, guests number} (select one or more)
 		OF Target={Masseur, Helper, Shop, Period} (select one or more, but not all)
 		BETWEEN {Masseur, Helper, Shop, Period}-Target (select one)
