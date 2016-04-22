@@ -21,7 +21,7 @@ A5. The number of assigned and not assigned service-time with the masseur.
 Q6. What are the logical groupings that could be used to organize these data items
 on the dashboard? Into which of these groups does each data item belong?
 A6.
-    1. Work-log group by masseur
+	1. Work-log group by masseur
 		1) Get which helpers help the masseur, and even group by helper
 		2) Get where the masseur serves, and even group by shop
 		3) Get how many times the masseur works in a specific period of time, and even group by each period
@@ -32,14 +32,14 @@ A6.
 		2) Get where the helper helps the masseurs, and even group by shop
 		3) Get how many times the helper appears in a specific period of time, and even group by each period
 		4) Get the summary of the salary in a work-log which contains the helper
-
-    3. Work-log group by shop
+	
+	3. Work-log group by shop
 		1) Get which masseurs works here, and even group by masseur
 		2) Get which helpers works here, and even group by helper
 		3) Get how many work-logs are produced here in a specific period of time, and even group by each period
 		4) Get the summary of assigned, not-assigned service-time and the number of the guests, or even group by a specific period of time
 
-    A work-log belongsTo a masseur, a helper and a shop.
+    	A work-log belongsTo a masseur, a helper and a shop.
 	A masseur hasMany work-logs.
 	A helper hasMany work-logs.
 	A shop hasMany work-logs.
