@@ -9,11 +9,11 @@ A3. Formulate a question by selecting what kind of plotting and what data to sho
 
 Q4. What specific information should be displayed on the dashboard? List all of the data items that should be included on the dashboard. Also indicate the level of summary/detail at which each item should be expressed on the dashboard.
 A4. Guest traffic or workload comparison with last time.
-    A daily work-log of a masseur contains:
-        1. names (of masseur, helper and shop)
-        2. logging date
-        3. number of assigned service-time (and not-assigned service-time)
-        4. number of guest (a guest may have not only one service-time)
+	A daily work-log of a masseur contains:
+		1. names (of masseur, helper and shop)
+		2. logging date
+		3. number of assigned service-time (and not-assigned service-time)
+		4. number of guest (a guest may have not only one service-time)
 
 Q5. Which of the data items listed above are the key (i.e., most important) items needed to meet the objectives supported by the dashboard?
 A5. The number of assigned and not assigned service-time with the masseur.
@@ -32,14 +32,14 @@ A6.
 		2) Get where the helper helps the masseurs, and even group by shop
 		3) Get how many times the helper appears in a specific period of time, and even group by each period
 		4) Get the summary of the salary in a work-log which contains the helper
-	
+
 	3. Work-log group by shop
 		1) Get which masseurs works here, and even group by masseur
 		2) Get which helpers works here, and even group by helper
 		3) Get how many work-logs are produced here in a specific period of time, and even group by each period
 		4) Get the summary of assigned, not-assigned service-time and the number of the guests, or even group by a specific period of time
 
-    	A work-log belongsTo a masseur, a helper and a shop.
+	A work-log belongsTo a masseur, a helper and a shop.
 	A masseur hasMany work-logs.
 	A helper hasMany work-logs.
 	A shop hasMany work-logs.
@@ -47,7 +47,7 @@ A6.
 Q7. What are the useful comparisons that will allow the dashboard’s users to see the data items listed above in context? For instance, if one of the measures that your dashboard displays is revenue, do you have targets or historical data that could also be displayed to make current revenue more meaningful?
 A7.
 	1. Compare the number of assigned service-time and not-assigned service-time (then calculate the income), and the number of guests
-        	1) Between masseurs
+		1) Between masseurs
 		2) Between helpers
 		3) Between shops
 		4) Between specific periods of time
@@ -71,6 +71,6 @@ A7.
 	And so on....
 
 	Formula:
-        	COMPARE {assigned service-time, not-assigned service-time, guests number} (select one or more)
+		COMPARE {assigned service-time, not-assigned service-time, guests number} (select one or more)
 		OF Target={Masseur, Helper, Shop, Period} (select one or more, but not all)
 		BETWEEN {Masseur, Helper, Shop, Period}-Target (select one)
