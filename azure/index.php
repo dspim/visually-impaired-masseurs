@@ -18,7 +18,8 @@
 </style>
 </head>
 <body>
-<h1>All Cases List!</h1>
+<h1>All Cases List! 
+<input value="UPLOAD" type="button" onclick="location='upload.php'" /></h1>
 <p>Fill in all cases everyday, then click <strong>Submit</strong> to record.</p>
 <form method="post" action="index.php" enctype="multipart/form-data" >
       店名  <input type="text" name="sid" id="sid"/></br>
