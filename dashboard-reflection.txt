@@ -72,5 +72,6 @@ A7.
 
 	Formula:
 		COMPARE {assigned service-time, not-assigned service-time, guests number} (select one or more)
-		OF Target={Masseur, Helper, Shop, Period} (select one or more, but not all)
+		OF Target={Masseur, Helper, Shop, Period} (select zero or more, but not all)
 		BETWEEN {Masseur, Helper, Shop, Period}-Target (select one)
+		BY {sum, count, average} (select one)
