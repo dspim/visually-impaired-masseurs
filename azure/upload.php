@@ -19,14 +19,13 @@ $destination_folder="~/Downloads/"; //上傳檔路徑
 <head>
 <title>檔案上傳程式</title>
 <style type="text/css">
+	body {
+		background-color: #fff; border-top: solid 10px #000;
+        color: #333; margin: 20; padding: 20;
+        font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
+	}
 	.warning {
 		color: red;
-	}
-	.uploadfile {
-		margin-left: 20px;
-	}
-	.margintop {
-		margin-top: 20px;
 	}
 	table, th {
 		text-align: center;
@@ -38,11 +37,12 @@ $destination_folder="~/Downloads/"; //上傳檔路徑
 
 <body>
 
-<div class="margintop uploadfile">
+<div>
 <form class="form-inline" enctype="multipart/form-data" method="post" name="upform">
 上傳檔案:
 <input class="form-control" id="focusedInput" name="upfile" type="file">
-<input class="btn btn-default" type="submit" name="submit" value="上傳"><br>
+<input class="btn btn-default" type="submit" name="submit" value="上傳">
+<input class="btn btn-default" type="button" onclick="location='/'" value="回首頁" /><br>
 允許上傳的檔案類型為:<?php echo implode(',',$uptypes)?>
 </form>
 
@@ -56,7 +56,7 @@ if(isset($_POST['submit']))
 	if (!is_uploaded_file($_FILES["upfile"]['tmp_name']))
 	//是否存在檔案
 	{
-	echo "<p class='uploadfile'>您還沒有選擇檔!</p>";
+	echo "<p>您還沒有選擇檔!</p>";
 	exit;
 	}
 
@@ -65,14 +65,14 @@ if(isset($_POST['submit']))
 	if($max_file_size < $file["size"])
 	//檢查檔案大小
 	{
-	echo "<p class='uploadfile'>您選擇的檔太大了!</p>";
+	echo "<p>您選擇的檔太大了!</p>";
 	exit;
 	}
 
 	if(!in_array($file["type"], $uptypes))
 	//檢查檔案類型
 	{
-	echo "<p class='uploadfile'>檔案類型不符!</p>";
+	echo "<p>檔案類型不符!</p>";
 	exit;
 	}
 
@@ -80,7 +80,7 @@ if(isset($_POST['submit']))
 	$fileName = $_FILES["upfile"]['tmp_name'];
 	$csvData = file_get_contents($fileName);
 	$gl = $csvData;
-	echo $gl;
+	// echo $gl;
 	$lines = explode(PHP_EOL, $csvData);
 	
 	$array = array();
@@ -94,7 +94,7 @@ if(isset($_POST['submit']))
 		if ($ch === "店名") {
 			// echo "ok";
 
-			print "<div class='warning uploadfile'>請資訊確認如下：\n" . 
+			print "<div class='warning'>請資訊確認如下：\n" . 
 				"如有錯誤欄位請重新上傳，再點選「存入資料庫」。</div><br>" . 
 				"<table class='table table-striped'>\n";
 			echo "<tr>";
@@ -118,10 +118,10 @@ if(isset($_POST['submit']))
 			
 			echo "<form method='post'>
 					<input name='gl' value='".$gl."' type='hidden'>
-					<input class='uploadfile btn btn-default' name='fn' type='submit' value='存入資料庫' />
+					<input class='btn btn-default' name='fn' type='submit' value='存入資料庫' />
 					</form>";
 		} else {
-			echo "<div class='uploadfile'> CSV 錯誤格式</div>";
+			echo "<div> CSV 錯誤格式</div>";
 			exit;
 		}
 	
@@ -172,10 +172,16 @@ if(isset($_POST['submit']))
    //                 VALUES (?,?,?,?,?,?,?)";
   		
 			}
-			echo "<script>location='index.php';alert('新增成功!');</script>";
+			$sql_query = "SELECT * FROM worklog";
+			$q = $conn->query($sql_query);
+			$rows = $q->fetchAll();
+			$show = count($rows);
+			$new = ceil($show/30);
+			echo "<script>location='index.php?page=".$new."';alert('新增成功!');</script>";
 	}
     catch(Exception $e) {
         die(var_dump($e));
+        echo "<script>location='upload.php';alert('CSV 格式有錯喔，請重新上傳!');</script>";
     }
 		
 
