@@ -30,14 +30,31 @@ $destination_folder="~/Downloads/"; //上傳檔路徑
 	table, th {
 		text-align: center;
 	}
-
+	h1 {
+        margin-bottom: 30px; 
+    }
+    .mato {
+    	margin-top: 30px;
+    }
 </style>
 </head>
 
 
 <body>
+<h1>上傳頁面</h1>
+csv 格式範例參考: <a href="https://goo.gl/Vud2hg">前往下載 EXCEL 空白格式</a>
+<br><br>
+<table class='table table-bordered table-striped'>
+    <tr><th class="ww">小站</th><th class="w">日期</th><th class="ww">按摩師傅</th>
+        <th class="w">指定節數</th><th class="w">未指定節數</th><th class="w">來客數</th>
+        <th class="ww">管理員</th></tr>
+    
+    <tr>
+		<td>3 雙連</td><td>2015-04-01</td><td>1 王依</td><td>	3</td><td>6</td><td>6</td><td>2 王武</td>
+    </tr>
+</table>
 
-<div>
+<div class="mato">
 <form class="form-inline" enctype="multipart/form-data" method="post" name="upform">
 上傳檔案:
 <input class="form-control" id="focusedInput" name="upfile" type="file">
@@ -91,20 +108,20 @@ if(isset($_POST['submit']))
 	}
 
 	$ch = $array[0][0];	
-		if ($ch === "店名") {
+		if ($ch === "小站") {
 			// echo "ok";
 
-			print "<div class='warning'>請資訊確認如下：\n" . 
+			print "<div class='warning'>請確認資訊如下：\n" . 
 				"如有錯誤欄位請重新上傳，再點選「存入資料庫」。</div><br>" . 
 				"<table class='table table-striped'>\n";
 			echo "<tr>";
-			echo "<th>店名</th>";
+			echo "<th>小站</th>";
 			echo "<th>日期</th>";
 			echo "<th>師傅</th>";
 			echo "<th>指定節數</th>";
 			echo "<th>未指定節數</th>";
 			echo "<th>來客數</th>";
-			echo "<th>接待員</th></tr>";
+			echo "<th>管理員</th></tr>";
 			for($i=1;$i<=$n;$i++){            
 			    echo "<tr>";
 			    for($j=0;$j<$m;$j++){
