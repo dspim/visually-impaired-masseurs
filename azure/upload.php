@@ -208,6 +208,11 @@ if(isset($_POST['submit']))
 ?>
 
 
+<script type="text/javascript">
+	
+$("a").click(function(event){
+$("a").attr("target","_blank");});
 
+</script>
 </body>
 </html>

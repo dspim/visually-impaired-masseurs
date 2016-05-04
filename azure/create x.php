@@ -62,7 +62,6 @@ include "conn.php";
 <input class='right btn btn-primary' type='button' name='add' id='add' value='新增一筆' />
 </h1>
 
-
 <!-- Insert registration info -->
 <form method='post' action='create.php'>
 記錄欄位格式參考<br><br>
@@ -76,65 +75,16 @@ include "conn.php";
     </tr>
 </table>
 
-<span class="warning">操作：請先按左上“新增一筆”資料，完成所有該欄位填寫再按出“預覽工作表”。</span>
+<span class="warning">操作：請先按左上“新增一筆”資料，完成所有該欄位填寫再按出“預覽工作表”。</span><br>
+<div id="wrongsign"></div>
 <br><br>
-<!-- <table class='table table-striped'>
-    <tr><th>小站</th><th>日期</th><th>師傅名字</th>
-        <th>指定節數</th><th>未指定節數</th><th>來客數</th>
-        <th>管理員名字</th><th>刪除</th></tr>
-</table>   -->  
-
 <div id="showBlock"></div>
-<input class='right btn btn-primary' type='submit' name='submit' value='預覽工作表' />
+<button class='right btn btn-primary' type="submit" name="add">預覽工作表</button> 
 </form>
 
-<!-- save in db -->
-<?php
 
-    // Insert registration info
-    if(!empty($_POST)) {
-        try {
-        	$sid = $_POST['sid'];
-            $log_date = $_POST['log_date'];
-            $mid = $_POST['mid'];
-            $assigned = $_POST['assigned'];
-            $not_assigned = $_POST['not_assigned'];
-            $hid = $_POST['hid'];
-            $guest_num = $_POST['guest_num'];
-
-            if($long_date == null || $assigned == null || $not_assigned == null || $guest_num == null) {
-                echo "<script>alert('請新增記錄 或 記錄中有欄位是空白'); window.location.href = 'create.php';</script>";
-                exit;
-            }
-
-            if($sid == 0 || $mid == 0 || $hid == 0 ) {
-                echo "<script>alert('有欄位是空白'); window.location.href = 'create.php';</script>";
-                exit;
-            }
-            
-            // Insert data
-            $sql_insert = "INSERT INTO worklog (log_date, mid, assigned, not_assigned, hid, guest_num, sid)
-                       VALUES (?,?,?,?,?,?,?)";
-            $stmt = $conn->prepare($sql_insert);
-            $stmt->bindValue(1, $log_date);
-            $stmt->bindValue(2, $mid);
-            $stmt->bindValue(3, $assigned);
-            $stmt->bindValue(4, $not_assigned);
-            $stmt->bindValue(5, $hid);
-            $stmt->bindValue(6, $guest_num);
-            $stmt->bindValue(7, $sid);
-            // $stmt->bindValue(3, $date);
-            $stmt->execute();
-        }
-        catch(Exception $e) {
-            // die(var_dump($e));
-            echo "<script>alert('記錄中有欄位格式錯誤喔'); window.location.href = 'create.php';</script>";
-        }
-    } 
-
-
-?>
 <script>
+
 $(function() {
     $("#log_date").datepicker();
     $("#log_date").datepicker( "option", "dateFormat", "yy-mm-dd");
@@ -143,7 +93,7 @@ $(function() {
   var php = '<?php include "div.php"; ?>';
   //add input block in showBlock
   $("#add").click(function () {
-      $("#showBlock").append('<table class="table table-bordered table-striped" id="div' + txtId + '"><tr><td>'+txtId+'</td>'+php+' <td><input class="btn btn-danger" type="button" value="x" onclick="deltxt('+txtId+')"></td></tr></table>');
+      $("#showBlock").append('<table class="table table-bordered table-striped" id="div' + txtId + '"><tr><td><span name="txtId">'+txtId+'</span></td>'+php+'<td><input class="btn btn-danger" type="button" value="x" onclick="deltxt('+txtId+')"></td></tr></table>');
       txtId++;
   });
   //remove div

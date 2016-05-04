@@ -75,7 +75,7 @@ $total_pages = ceil($total_records/$pageRow_records);
 <h1>工作列表
 <input class="right btn btn-default" value="管理員列表" type="button" onclick="location='helper.php'" />
 <input class="right btn btn-default" value="師傅列表" type="button" onclick="location='masseur.php'" />
-<input class="right btn btn-default" value="新增工作記錄" type="button" onclick="location='create.php'" />
+<input class="right btn btn-default" value="新增工作記錄" type="button" onclick="location='create_view.php'" />
 <input class="right btn btn-default" value="上傳頁面" type="button" onclick="location='upload.php'" />
 <!-- <form method="post" name="frm">
     <Button class="right btn btn-danger" onClick="delete_record();">刪除</Button>

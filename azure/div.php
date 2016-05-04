@@ -1,4 +1,5 @@
 <?php 
+    
 	echo '<td>';
 		$sql = "SELECT * FROM shop";
         $st_shop = $conn->query($sql);

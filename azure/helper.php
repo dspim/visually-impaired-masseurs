@@ -60,7 +60,7 @@ $total_pages = ceil($total_records/$pageRow_records);
 
 <h1>管理員列表
 <input class="right btn btn-default" value="按摩師傅列表" type="button" onclick="location='masseur.php'" />
-<input class="right btn btn-default" value="新增工作記錄" type="button" onclick="location='create.php'" />
+<input class="right btn btn-default" value="新增工作記錄" type="button" onclick="location='create_view.php'" />
 <input class="right btn btn-default" value="上傳頁面" type="button" onclick="location='upload.php'" />
 <input class="right btn btn-default" type="button" onclick="location='/'" value="回首頁" /><br>
 
