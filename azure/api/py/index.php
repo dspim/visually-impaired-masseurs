@@ -1,4 +1,5 @@
 <?php  
-system("python ../../python/print.py");
+header("Content-Type: text/plain");
+system("python ../../python/analyze.py --compare assigned --between shop");
 
 ?>
