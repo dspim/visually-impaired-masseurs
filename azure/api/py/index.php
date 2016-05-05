@@ -1,5 +1,7 @@
-<?php  
-header("Content-Type: text/plain");
-system("python ../../python/analyze.py --compare assigned --between shop");
+<?php
+	header("Content-Type: text/plain");
 
+	$arg = $_GET["arg"];
+
+	system("python ../../python/analyze.py $arg");
 ?>
