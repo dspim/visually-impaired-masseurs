@@ -9,3 +9,10 @@
 or
 
 ``hhvm -m s -p 8000``
+
+## Python modules
+``pip install plotly``
+``pip install pymysql``
+
+
+
