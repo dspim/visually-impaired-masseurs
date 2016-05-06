@@ -68,7 +68,7 @@ def query(compares, targets, between, by, barMode):
         for i in target_masseurs:
             worklogs = filter(lambda x: x[1] == i[0], worklogs)
     if targets["h"] != "":
-        target_helps = filter(lambda x: x[1] == targets["h"].decode("utf-8"), target_helps)
+        target_helpers = filter(lambda x: x[1] == targets["h"].decode("utf-8"), target_helpers)
         for i in target_helpers:
             worklogs = filter(lambda x: x[2] == i[0], worklogs)
     if targets["s"] != "":
