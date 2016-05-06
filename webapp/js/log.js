@@ -3,4 +3,6 @@ function toLog() {
 	menu_log.addClass('active');
 	menu_summary.removeClass('active');
 	menu_idmt.removeClass('active');
+
+	$('.mode_idmt').toggle(0);
 }

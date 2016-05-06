@@ -1,5 +1,6 @@
 <?php
-header("Content-type: text/json; charset=utf-8");
+	header('Access-Control-Allow-Origin: *');
+	header("Content-type: text/json; charset=utf-8");
 
     $host = "ap-cdbr-azure-east-c.cloudapp.net";
     $user = "b4aa79b2c77ddc";

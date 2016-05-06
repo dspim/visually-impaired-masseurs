@@ -14,6 +14,7 @@
 
 	<script type="text/javascript" src="./plotlyjs/plotly-latest.min.js"></script>
 	<script type="text/javascript" src="./semantic/dist/semantic.min.js"></script>
+	<script type="text/javascript" src="./lodash/lodash.min.js"></script>
 </head>
 
 <body>
@@ -26,21 +27,21 @@
 					<a id="menu_log" class="item ">操作紀錄</a>
 				</div>
 			</div>
-			<div class="five wide column ">
+			<div style="display:none;" class="mode_idmt five wide column">
 				<div class="ui vertical steps ">
-					<div class="completed step ">
+					<div class="active step ">
 						<div class="content ">
 							<div class="title ">選定比較屬性</div>
 							<div class="description ">選擇想要拿來比較的屬性</div>
 						</div>
 					</div>
-					<div class="completed step ">
+					<div class="step ">
 						<div class="content ">
 							<div class="title ">選定比較前提</div>
 							<div class="description ">選擇在什麼樣的狀況下比較</div>
 						</div>
 					</div>
-					<div class="active step ">
+					<div class="step ">
 						<div class="content ">
 							<div class="title ">選定比較對象</div>
 							<div class="description ">在前提之下，選擇在什麼之間進行比較</div>
@@ -48,25 +49,54 @@
 					</div>
 				</div>
 			</div>
-			<div class="eleven wide column ">
-				<div class="ui segment">
+			<div style="display:none;" class="mode_idmt eleven wide column">
+				<div class="ui segment" style="padding-top:22px; padding-bottom: 22px; margin:0px">
 					<div class="ui centered grid">
-						<div class="five wide column">
-							<div class="ui toggle checkbox" style="margin-right: 40px">
+						<div class="four wide column">
+							<div id="compare_selection_assigned" class="ui toggle checkbox" style="margin-right: 40px">
 								<input type="checkbox" tabindex="0" class="hidden">
 								<label>指定節數</label>
 							</div>
 						</div>
 						<div class="five wide column">
-							<div class="ui toggle checkbox" style="margin-right: 40px">
+							<div id="compare_selection_not_assigned" class="ui toggle checkbox" style="margin-right: 40px">
 								<input type="checkbox" tabindex="1" class="hidden">
 								<label>未指定節數</label>
 							</div>
 						</div>
-						<div class="five wide column">
-							<div class="ui toggle checkbox">
+						<div class="four wide column">
+							<div id="compare_selection_guest_num" class="ui toggle checkbox">
 								<input type="checkbox" tabindex="2" class="hidden">
 								<label>來客數</label>
+							</div>
+						</div>
+						<div class="three wide column">
+							<p>
+							</p>
+						</div>
+					</div>
+				</div>
+
+
+
+
+
+
+
+				<div class="ui segment" style="padding-top:22px; padding-bottom: 22px; margin:0px">
+					<div class="ui form">
+						<div class="fields">
+							<div class="field">
+								<label>Gender</label>
+								<div class="ui dropdown selection">
+									<input type="hidden" name="gender">
+									<div class="default text">Select Gender</div>
+									<i class="dropdown icon"></i>
+									<div class="menu">
+										<div class="item" data-value="male">Male</div>
+										<div class="item" data-value="female">Female</div>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>

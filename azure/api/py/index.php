@@ -1,7 +1,12 @@
 <?php
+    header('Access-Control-Allow-Origin: *');
 	header("Content-Type: text/plain");
 
-	$arg = $_GET["arg"];
-
+	if(isset($_GET['arg'])) {
+		$arg = $_GET["arg"];
+	} else {
+		$arg = "-h";	
+	}
+	
 	system("python ../../python/analyze.py $arg");
 ?>
