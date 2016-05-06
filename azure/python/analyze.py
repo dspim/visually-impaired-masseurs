@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[7]:
+# In[2]:
 
 #!/usr/bin/python
 
@@ -39,8 +39,6 @@ if args.fromDate != None and args.toDate != None:
 elif args.fromDate != None and args.step != None:
     between = {"from":args.fromDate, "step":args.step}
 
-
-
 def query(compares, targets, between, by, barMode):
     # compares = ['assigned', 'not_assigned', 'guest']
     # target = {"m":"","h":"","s": "","p":""}
@@ -68,7 +66,7 @@ def query(compares, targets, between, by, barMode):
         for i in target_masseurs:
             worklogs = filter(lambda x: x[1] == i[0], worklogs)
     if targets["h"] != "":
-        target_helps = filter(lambda x: x[1] == targets["h"].decode("utf-8"), target_helps)
+        target_helpers = filter(lambda x: x[1] == targets["h"].decode("utf-8"), target_helpers)
         for i in target_helpers:
             worklogs = filter(lambda x: x[2] == i[0], worklogs)
     if targets["s"] != "":
@@ -167,4 +165,9 @@ def query(compares, targets, between, by, barMode):
     conn.close()
     
 query(compares, {"m":args.masseur,"h":args.helper,"s":args.shop,"p":target_period}, between, args.by, args.barMode)
+
+
+# In[ ]:
+
+
 
