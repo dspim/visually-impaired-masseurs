@@ -8,7 +8,7 @@
 import argparse
 import pymysql
 import plotly
-# plotly.offline.init_notebook_mode()
+import itertools
 from plotly.graph_objs import *
 from plotly.offline.offline import _plot_html
 from datetime import date, datetime, timedelta
@@ -120,8 +120,7 @@ def query(compares, targets, between, by, barMode):
             )
             data.append(trace)
         layout = dict(
-            layout = dict(
-                yaxis=dict(
+ 	         yaxis=dict(
                     title=','.join(compares),
                     titlefont=dict(
                         family='Arial, sans-serif',
@@ -129,7 +128,7 @@ def query(compares, targets, between, by, barMode):
                         color='black'
                     )
                 )
-            )
+        
         )
         fig = Figure(data=data, layout=layout)
         plot_html, plotdivid, width, height = _plot_html(fig, False, "", True, '100%', 525, False)
