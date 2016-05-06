@@ -1,5 +1,11 @@
 <?php  
 header("Content-Type: text/plain");
-system("python ../../python/analyze.py --compare assigned --between shop");
+
+if(isset($_GET['arg'])) {
+	$arg = $_GET['arg'];
+} else {
+	$arg = "-h";
+}
+system("python ../../python/analyze.py" . " " . $arg);
 
 ?>
