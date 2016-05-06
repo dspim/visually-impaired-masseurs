@@ -4,5 +4,5 @@ function toIdmt() {
 	menu_summary.removeClass('active');
 	menu_log.removeClass('active');
 
-	console.log('idmt!');
+	$('.mode_idmt').toggle(0);
 }
