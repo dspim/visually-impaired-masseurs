@@ -17,6 +17,68 @@
 </head>
 
 <body>
+	<div class="ui container">
+		<div class="ui grid">
+			<div class="sixteen wide column">
+				<div class="ui three item menu ">
+					<a id="menu_summary" class="item active ">概況</a>
+					<a id="menu_idmt" class="item ">互動式圖表</a>
+					<a id="menu_log" class="item ">操作紀錄</a>
+				</div>
+			</div>
+			<div class="five wide column ">
+				<div class="ui vertical steps ">
+					<div class="completed step ">
+						<div class="content ">
+							<div class="title ">選定比較屬性</div>
+							<div class="description ">選擇想要拿來比較的屬性</div>
+						</div>
+					</div>
+					<div class="completed step ">
+						<div class="content ">
+							<div class="title ">選定比較前提</div>
+							<div class="description ">選擇在什麼樣的狀況下比較</div>
+						</div>
+					</div>
+					<div class="active step ">
+						<div class="content ">
+							<div class="title ">選定比較對象</div>
+							<div class="description ">在前提之下，選擇在什麼之間進行比較</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="eleven wide column ">
+				<div class="ui segment">
+					<div class="ui centered grid">
+						<div class="five wide column">
+							<div class="ui toggle checkbox" style="margin-right: 40px">
+								<input type="checkbox" tabindex="0" class="hidden">
+								<label>指定節數</label>
+							</div>
+						</div>
+						<div class="five wide column">
+							<div class="ui toggle checkbox" style="margin-right: 40px">
+								<input type="checkbox" tabindex="1" class="hidden">
+								<label>未指定節數</label>
+							</div>
+						</div>
+						<div class="five wide column">
+							<div class="ui toggle checkbox">
+								<input type="checkbox" tabindex="2" class="hidden">
+								<label>來客數</label>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript " src="./js/idmt.js "></script>
+	<script type="text/javascript " src="./js/log.js "></script>
+	<script type="text/javascript " src="./js/summary.js "></script>
+	<script type="text/javascript " src="./js/init.js "></script>
 </body>
 
 </html>
