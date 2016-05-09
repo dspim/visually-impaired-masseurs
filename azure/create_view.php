@@ -9,6 +9,7 @@ include "conn.php";
 <!-- <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/> -->
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
 <!-- Latest compiled JavaScript -->
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -38,7 +39,7 @@ include "conn.php";
         text-align: center;
     }
     .w {
-        width: 150px;
+        width: 100px;
     }
     .ww {
         width: 200px;
@@ -92,7 +93,7 @@ include "conn.php";
 
 <!-- view record -->
 <?php
-include "conn.php";
+// include "conn.php";
 if(isset($_POST['save_mul']))
 {  
  $total = $_POST['total'];
@@ -191,11 +192,11 @@ if(isset($_POST['btn-gen-form']))
  <table class="table table-striped">
     
     
-    <tr><th>##</th><th>小站</th><th>日期</th><th>按摩師傅</th>
+    <tr><th>##</th><th>小站</th><th>日期</th><th>師傅</th>
         <th>指定節數</th><th>未指定節數</th><th>來客數</th>
         <th>管理員</th></tr>
  <?php
- include "conn.php";
+ // include "conn.php";
 
  for($i=1; $i<=$_POST["no_of_rec"]; $i++) 
  {
@@ -221,17 +222,38 @@ if(isset($_POST['btn-gen-form']))
                 } else echo "0 shop result!"; 
         ?></td>
         <td><input class='d form-control' type="text" name='log_date<?php echo $i; ?>' placeholder='2016-01-01' id='log_date<?php echo $i; ?>' /></td>
-        <td>
+        
+        <!-- <td> -->
             <!-- <input class='form-control' type='text' name='mid' placeholder='mname' /> -->
             <?php
-                $sql = "SELECT * FROM masseur";
-                $st_shop = $conn->query($sql);
-                $registrants = $st_shop->fetchAll();
-                if(count($registrants) > 0) {
+                
+                // $sql = "SELECT DISTINCT SUBSTRING(mname, 1, 1) AS la FROM masseur";
+                // $st_shop = $conn->query($sql);
+                // $registrants = $st_shop->fetchAll();
+                // if(count($registrants) > 0) {
+                //     echo "<select id='selela".$i."' class='form-control' name='mla".$i."'>";
+                //     echo "<option value=0>請選擇</option>";
+                //     foreach($registrants as $registrant) {
+                //         $la = $registrant['la'];
+                //         echo "<option value=". $registrant['la'] .">" . $la . "</option>";
+                //     }
+                //     echo "</select>";
+
+                // } else echo "0 shop result!"; 
+            ?>
+        <!-- </td>  -->
+        <td>
+        <?php   
+            // echo "<select id='selela2' class='form-control' name='masseurid".$i."'><option></option></select>";
+                // $sql_l = "SELECT * FROM masseur WHERE SUBSTRING(mname, 1, 1)='".$la."'";
+                $sql_l = "SELECT * FROM masseur";
+                $st_s = $conn->query($sql_l);
+                $regs = $st_s->fetchAll();
+                if(count($regs) > 0) {
                     echo "<select class='form-control' name='masseurid".$i."'>";
                     echo "<option value=0>請選擇按摩師傅</option>";
-                    foreach($registrants as $registrant) {
-                        echo "<option value=" . $registrant['mid'] . ">" . $registrant['mname'] . "</option>";
+                    foreach($regs as $reg) {
+                        echo "<option value=" . $reg['mid'] . ">" . $reg['mname'] . "</option>";
                     }
                     echo "</select>";
                 } else echo "0 shop result!"; 
@@ -276,7 +298,7 @@ if(isset($_POST['btn-gen-form']))
 
 
 <script>
-var num = 1;
+
 <?php
     $n = $_POST["no_of_rec"];
     for($i=1; $i<=$_POST["no_of_rec"]; $i++) {
@@ -285,15 +307,47 @@ $(function() {
 
     $("#log_date"+<?=$i?>).datepicker();
     $("#log_date"+<?=$i?>).datepicker( "option", "dateFormat", "yy-mm-dd");
-    num++;
+    
 });
+
 <?php 
 }
 ?>
-
 function goBack() {
     window.history.go(-1);
 }
+// $(function(){
+//     $("#selela"+<?=$i?>).change(function(){
+//           // * $(this).val() : #test1 的 value 值
+//           // * $('#test1 :selected').text() : #test1 的 text 值 
+//         var x = $('#selela'+<?=$i?>+' :selected').text();
+//         alert(x);
+//             $.get(
+//             'create_view.php',
+//              x,
+//              function(){
+//                window.open("create_view.php?x="+x);
+//              }
+//             );
+//             <?php
+//                 $ll = $_GET['x'];
+//                 $sql_l = "SELECT * FROM masseur WHERE SUBSTRING(mname, 1, 1)='".$ll."'";
+//                 $st_s = $conn->query($sql_l);
+//                 $regs = $st_s->fetchAll();
+//                 if(count($regs) > 0) {
+//                     foreach($regs as $reg) {
+//             ?>
+//                         $("#selela2").addOption(<?=$reg['mid']?>, <?=$reg['mname']?>);
+//             <?php            
+//                         // echo "<option value=" . $reg['mid'] . ">" . $reg['mname'] . "</option>";
+//                     }
+//                 } else echo "0 shop result!"; 
+                
+//             ?>
+//     });
+// });
+
+
 </script>
 </body>
 </html>
