@@ -9,7 +9,10 @@ include "conn.php";
 <!-- <link href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css" rel="stylesheet" type="text/css"/> -->
 <!-- jQuery library -->
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+<<<<<<< HEAD
 
+=======
+>>>>>>> 48c3d1d188b4f275f6d8911eb5766d371854a9ff
 <!-- Latest compiled JavaScript -->
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -39,7 +42,11 @@ include "conn.php";
         text-align: center;
     }
     .w {
+<<<<<<< HEAD
         width: 100px;
+=======
+        width: 150px;
+>>>>>>> 48c3d1d188b4f275f6d8911eb5766d371854a9ff
     }
     .ww {
         width: 200px;
@@ -77,7 +84,11 @@ include "conn.php";
     </tr>
 </table>
 
+<<<<<<< HEAD
 <span class="warning">操作：請先輸入要新增幾筆資料，再行填寫（記得欄位格式正確才可以預覽紀錄表喔）。</span><br>
+=======
+<span class="warning">操作：請先按左上“新增一筆”資料，完成所有該欄位填寫再按出“預覽工作表”。</span><br>
+>>>>>>> 48c3d1d188b4f275f6d8911eb5766d371854a9ff
 <div id="wrongsign"></div>
 <br><br>
 
@@ -93,12 +104,19 @@ include "conn.php";
 
 <!-- view record -->
 <?php
+<<<<<<< HEAD
 // include "conn.php";
+=======
+include "conn.php";
+>>>>>>> 48c3d1d188b4f275f6d8911eb5766d371854a9ff
 if(isset($_POST['save_mul']))
 {  
  $total = $_POST['total'];
 
+<<<<<<< HEAD
 echo '<span class="warning">操作：如果填寫正確請按“存入資料庫”；如需修改請按“回上一步修改”（記得按重新整理輸入的資料會清掉喔）。</span><br>';
+=======
+>>>>>>> 48c3d1d188b4f275f6d8911eb5766d371854a9ff
 ?>
 <table class="table table-striped">
     
@@ -192,11 +210,19 @@ if(isset($_POST['btn-gen-form']))
  <table class="table table-striped">
     
     
+<<<<<<< HEAD
     <tr><th>##</th><th>小站</th><th>日期</th><th>師傅</th>
         <th>指定節數</th><th>未指定節數</th><th>來客數</th>
         <th>管理員</th></tr>
  <?php
  // include "conn.php";
+=======
+    <tr><th>##</th><th>小站</th><th>日期</th><th>按摩師傅</th>
+        <th>指定節數</th><th>未指定節數</th><th>來客數</th>
+        <th>管理員</th></tr>
+ <?php
+ include "conn.php";
+>>>>>>> 48c3d1d188b4f275f6d8911eb5766d371854a9ff
 
  for($i=1; $i<=$_POST["no_of_rec"]; $i++) 
  {
@@ -222,6 +248,7 @@ if(isset($_POST['btn-gen-form']))
                 } else echo "0 shop result!"; 
         ?></td>
         <td><input class='d form-control' type="text" name='log_date<?php echo $i; ?>' placeholder='2016-01-01' id='log_date<?php echo $i; ?>' /></td>
+<<<<<<< HEAD
         
         <!-- <td> -->
             <!-- <input class='form-control' type='text' name='mid' placeholder='mname' /> -->
@@ -254,6 +281,19 @@ if(isset($_POST['btn-gen-form']))
                     echo "<option value=0>請選擇按摩師傅</option>";
                     foreach($regs as $reg) {
                         echo "<option value=" . $reg['mid'] . ">" . $reg['mname'] . "</option>";
+=======
+        <td>
+            <!-- <input class='form-control' type='text' name='mid' placeholder='mname' /> -->
+            <?php
+                $sql = "SELECT * FROM masseur";
+                $st_shop = $conn->query($sql);
+                $registrants = $st_shop->fetchAll();
+                if(count($registrants) > 0) {
+                    echo "<select class='form-control' name='masseurid".$i."'>";
+                    echo "<option value=0>請選擇按摩師傅</option>";
+                    foreach($registrants as $registrant) {
+                        echo "<option value=" . $registrant['mid'] . ">" . $registrant['mname'] . "</option>";
+>>>>>>> 48c3d1d188b4f275f6d8911eb5766d371854a9ff
                     }
                     echo "</select>";
                 } else echo "0 shop result!"; 
@@ -298,7 +338,11 @@ if(isset($_POST['btn-gen-form']))
 
 
 <script>
+<<<<<<< HEAD
 
+=======
+var num = 1;
+>>>>>>> 48c3d1d188b4f275f6d8911eb5766d371854a9ff
 <?php
     $n = $_POST["no_of_rec"];
     for($i=1; $i<=$_POST["no_of_rec"]; $i++) {
@@ -307,6 +351,7 @@ $(function() {
 
     $("#log_date"+<?=$i?>).datepicker();
     $("#log_date"+<?=$i?>).datepicker( "option", "dateFormat", "yy-mm-dd");
+<<<<<<< HEAD
     
 });
 
@@ -348,6 +393,17 @@ function goBack() {
 // });
 
 
+=======
+    num++;
+});
+<?php 
+}
+?>
+
+function goBack() {
+    window.history.go(-1);
+}
+>>>>>>> 48c3d1d188b4f275f6d8911eb5766d371854a9ff
 </script>
 </body>
 </html>

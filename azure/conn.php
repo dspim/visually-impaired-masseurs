@@ -13,8 +13,12 @@
         // echo "connect";
     }
     catch(Exception $e){
+<<<<<<< HEAD
         // die(var_dump($e));
         echo "連線錯誤，請上 AZURE 檢查資料庫 QQ～";
+=======
+        die(var_dump($e));
+>>>>>>> 48c3d1d188b4f275f6d8911eb5766d371854a9ff
     }
     ?>
 
