@@ -35,7 +35,7 @@ var query_preview = $('#query-preview');
 var render_button = $('#render-button');
 var render_zone = $('#render-zone');
 
-target_shop_option.on('change', function() {
+target_shop_option.on('change', function () {
 	if (!target_shop_option.val().includes('全部')) {
 		$('#between-option-shop').hide(0);
 	} else {
@@ -43,7 +43,7 @@ target_shop_option.on('change', function() {
 	}
 });
 
-target_masseur_option.on('change', function() {
+target_masseur_option.on('change', function () {
 	if (!target_masseur_option.val().includes('全部')) {
 		$('#between-option-masseur').hide(0);
 	} else {
@@ -51,7 +51,7 @@ target_masseur_option.on('change', function() {
 	}
 });
 
-target_helper_option.on('change', function() {
+target_helper_option.on('change', function () {
 	if (!target_helper_option.val().includes('全部')) {
 		$('#between-option-helper').hide(0);
 	} else {
@@ -148,7 +148,8 @@ var gen_query_preview = function () {
 			(real_between_option === '各小站' ? 'shop' :
 				real_between_option === '各按摩師' ? 'masseur' :
 				real_between_option === '各時期' ? 'period' :
-				'helper');
+				real_between_option === '各管理員' ? 'helper' :
+				'');
 		if (real_between_period_from !== undefined) {
 			_arguments += ' --fromDate ' + real_between_period_from;
 		}
@@ -200,6 +201,7 @@ $.get('../api/helper', function (data) {
 });
 
 render_button.on('click', function () {
+	_arguments = '';
 	render_zone.html('<p>載入中...</p>');
 	gen_query_preview();
 	$.ajax({
