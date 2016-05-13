@@ -66,7 +66,7 @@ def query(compares, targets, between, by, chartMode, barMode):
     elif between == "helper":
         for helper in target_helpers:
             hid = helper[0]
-            dataList.append((helper[1],filter(lambda x: x[2] == mid ,worklogs)))
+            dataList.append((helper[1],filter(lambda x: x[2] == hid ,worklogs)))
     elif between == "shop":
         for shop in target_shops:
             sid = shop[0]
