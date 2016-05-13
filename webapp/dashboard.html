@@ -102,7 +102,7 @@
 									<option style="padding-left:12px">全部時期</option>
 									<option style="padding-left:12px">一段時期</option>
 								</select>
-								<div class="form-group">
+								<div id="if-target-period-option-is-not-all" class="form-group" style="display:none">
 									<p></p>
 									<h5>選擇時間</h5>
 									<input id="target-period-from" type="text" class="form-control" placeholder="YYYY-MM-DD 開始日期">
@@ -128,7 +128,7 @@
 							<option>各按摩師</option>
 							<option>各時期</option>
 						</select>
-						<div id="if-between-option-is-period" class="form-group noel-select-group">
+						<div id="if-between-option-is-period" class="form-group noel-select-group" style="display:none">
 							<p></p>
 							<h5>選擇時間</h5>
 							<input id="between-period-from" type="text" class="form-control" placeholder="YYYY-MM-DD 開始日期">
@@ -147,19 +147,20 @@
 					<hr />
 					<div class="form-group">
 						<label class="control-label" for="formInput87">預覽產生語句</label>
-						<input id="query preview" type="text" class="form-control noel-select-group" placeholder="於上方選擇至少一項欲比較屬性">
+						<input id="query-preview" type="text" class="form-control noel-select-group" placeholder="於上方選擇至少一項欲比較屬性">
 					</div>
 					<hr />
 				</form>
 				<button id="render-button" class="btn">繪製</button>
 				<hr />
-				<img src="./2.png" width="90%" />
+				<div id="render-zone"></div>
 			</div>
 		</div>
 	</div>
 	<script src="assets/js/jquery.min.js"></script>
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="assets/js/ie10-viewport-bug-workaround.js"></script>
+	<script src="assets/js/dashboard.js"></script>
 </body>
 
 </html>
