@@ -13,7 +13,7 @@ from plotly.graph_objs import *
 from plotly.offline.offline import _plot_html
 from datetime import date, datetime, timedelta
 
-def query(compares, targets, between, by, barMode):
+def query(compares, targets, between, by, chartMode, barMode):
     # compares = ['assigned', 'not_assigned', 'guest']
     # target = {"m":"","h":"","s": "","p":""}
     # between = 'masseur'|'helper'|'shop'|'date'
@@ -70,7 +70,7 @@ def query(compares, targets, between, by, barMode):
     elif between == "shop":
         for shop in target_shops:
             sid = shop[0]
-            dataList.append(shop[1],filter(lambda x: x[3] == sid ,worklogs))
+            dataList.append((shop[1],filter(lambda x: x[3] == sid ,worklogs)))
     else:
 #     for time period
 #     dataList = [
@@ -99,10 +99,12 @@ def query(compares, targets, between, by, barMode):
                 fromDate = add_months(fromDate,3)
     # compare result and create plot
     
+    # compare result and create plot 
     data = []
+    layout = None
     table = {"assigned":4, "not_assigned": 5, "guest": 6}
     if timeSeriesPlot:
-        # line char
+        # line chart
         daynum = fromDate - toDate
         x = [toDate + timedelta(days=num) for num in range(daynum.days, 1)]
         for name, logs in dataList:
@@ -135,10 +137,10 @@ def query(compares, targets, between, by, barMode):
             )
         )
         fig = Figure(data=data, layout=layout)
-        plot_html, plotdivid, width, height = _plot_html(fig, False, "", True, '100%', 525, False)
-        print plot_html
+#         plot_html, plotdivid, width, height = _plot_html(fig, False, "", True, '100%', 525, False)
+        plotly.offline.plot(fig)
     else:
-        # bar char
+        # bar chart
         x = map(lambda x: x[0], dataList)
         y = {}
         for compare in compares:
@@ -153,17 +155,32 @@ def query(compares, targets, between, by, barMode):
                         values.append(reduce(lambda a, b: a + b[table[compare]],logs , 0)/float(len(logs)))
                     else:
                         values.append(0)
-            y[compare] = values                
+            y[compare] = values 
+        iterator = 0
         for compare in compares:
-            trace = Bar(
-                x = x,
-                y = y[compare],
-                name = compare
-            )
-            data.append(trace)
-        layout = Layout(
-            barmode= barMode
-        )
+            iterator +=1 
+            if chartMode == "pie":
+                xLeft = float(1)/len(compares) * (iterator-1)
+                xRight = float(1)/len(compares) * iterator
+                data.append({
+                    "labels":x,
+                    "values":y[compare],
+                    "type":"pie",
+                    "name":compare,
+                    "domain": {'x': [xLeft, xRight],
+                       'y': [0,1]}
+                })
+                layout = {}
+            elif chartMode == "bar":
+                trace = Bar(
+                    x = x,
+                    y = y[compare],
+                    name = compare
+                )
+                data.append(trace)
+                layout = Layout(
+                    barmode= barMode
+                )
         fig = Figure(data=data, layout=layout)
         plot_html, plotdivid, width, height = _plot_html(fig, False, "", True, '100%', 525, False)
 #         plotly.offline.plot(fig)
@@ -185,8 +202,8 @@ parser.add_argument("--helper", help="Target helper Name", default="")
 parser.add_argument("--shop", help="Target shop Name", default="")
 
 parser.add_argument("--by", help="Select one aggregate argument, including sum, count, average. ex.: --by sum", default="sum")
-
-parser.add_argument("--barMode", help="Select one bar char mode , including stack,group. ex.: --by sum", default="group")
+parser.add_argument("--chartMode", help="Select one chart mode , including bar,pie. ex.: --chartMode pie", default="bar")
+parser.add_argument("--barMode", help="Select one bar chart mode , including stack,group. ex.: --by sum", default="group")
 
 args = parser.parse_args()
 if args.compare != None:
@@ -200,7 +217,7 @@ if step != "":
 elif args.fromDate != None and args.toDate != None:
     target_period = {"from":datetime.strptime(args.fromDate,"%Y-%m-%d"), "to":datetime.strptime(args.toDate,"%Y-%m-%d")}
 
-query(compares, {"m":args.masseur,"h":args.helper,"s":args.shop,"p":target_period}, between, args.by, args.barMode)
+query(compares, {"m":args.masseur,"h":args.helper,"s":args.shop,"p":target_period}, between, args.by, args.chartMode, args.barMode)
 
 
 # In[ ]:
