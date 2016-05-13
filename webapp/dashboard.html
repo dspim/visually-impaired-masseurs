@@ -7,7 +7,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="description" content="">
 	<meta name="author" content="">
-	<title>Dashboard Template for Bootstrap</title>
+	<title>雙連按摩師 - 資料儀表板 - 互動式圖表</title>
 	<!-- Bootstrap core CSS -->
 	<link href="bootstrap/css/bootstrap.css" rel="stylesheet">
 	<!-- Custom styles for this template -->
@@ -23,12 +23,6 @@
 	<nav class="navbar navbar-inverse navbar-fixed-top" style="background-color: rgb(68, 73, 110); min-height: 60px; padding-top:4px">
 		<div class="container-fluid">
 			<div class="navbar-header">
-				<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-					<span class="sr-only">Toggle navigation</span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-					<span class="icon-bar"></span>
-				</button>
 				<a class="navbar-brand" href="#" style="font-size: x-large; color:white; padding-top: 11px;"><span class="glyphicon glyphicon-dashboard" aria-hidden="true" style="top: 3px"></span>&nbsp;&nbsp;雙連按摩師 - 資料儀表板</a>
 			</div>
 		</div>
@@ -38,36 +32,16 @@
 			<div class="col-sm-3 col-md-2 sidebar">
 				<ul class="nav nav-sidebar">
 					<li>
-						<a href="#"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>&nbsp;&nbsp;概況</a>
+						<a href="./index.html"><span class="glyphicon glyphicon-th-large" aria-hidden="true"></span>&nbsp;&nbsp;概況</a>
 					</li>
 					<li class="active">
-						<a href="#"><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>&nbsp;&nbsp;互動式圖表</a>
+						<a><span class="glyphicon glyphicon-stats" aria-hidden="true"></span>&nbsp;&nbsp;互動式圖表</a>
 					</li>
 					<li>
 						<a href="#"><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;操作紀錄</a>
 					</li>
 					<li>
 						<a href="#"><span class="glyphicon glyphicon-save-file"></span>&nbsp;&nbsp;匯出報表</a>
-					</li>
-				</ul>
-				<ul class="nav nav-sidebar">
-					<li>
-					</li>
-					<li>
-					</li>
-					<li>
-					</li>
-					<li>
-					</li>
-					<li>
-					</li>
-				</ul>
-				<ul class="nav nav-sidebar">
-					<li>
-					</li>
-					<li>
-					</li>
-					<li>
 					</li>
 				</ul>
 			</div>
@@ -77,27 +51,27 @@
 						<label class="control-label" for="formInput87">想要比較的屬性</label>
 						<div class="checkbox">
 							<label class="control-label">
-								<input type="checkbox" value="">指定節數
+								<input id="compare-option-assigned" type="checkbox" value="">指定節數
 							</label>
 						</div>
 						<div class="checkbox">
 							<label class="control-label">
-								<input type="checkbox" value="">未指定節數
+								<input id="compare-option-not-assigned" type="checkbox" value="">未指定節數
 							</label>
 						</div>
 						<div class="checkbox">
 							<label class="control-label">
-								<input type="checkbox" value="">來客數
+								<input id="compare-option-guest-num" type="checkbox" value="">來客數
 							</label>
 						</div>
 					</div>
 					<hr />
 					<div class="form-group">
-						<label class="control-label" for="formInput87">想要侷限的比較範圍 (拿來比較的對象條件)</label>
+						<label class="control-label" for="formInput87">想要侷限的比較範圍 (拿來比較的對象的前提)</label>
 						<ul class="list-group" style="max-width: 62%">
 							<li class="list-group-item">
 								<h5>小站</h5>
-								<select class="form-control">
+								<select id="target-shop-option" class="form-control">
 									<option style="padding-left:12px">全部小站</option>
 									<option style="padding-left:12px">公館</option>
 									<option style="padding-left:12px">國泰</option>
@@ -106,7 +80,7 @@
 							</li>
 							<li class="list-group-item">
 								<h5>按摩師</h5>
-								<select class="form-control">
+								<select id="target-masseur-option" class="form-control">
 									<option style="padding-left:12px">全部按摩師</option>
 									<option style="padding-left:12px">王一</option>
 									<option style="padding-left:12px">李二</option>
@@ -115,7 +89,7 @@
 							</li>
 							<li class="list-group-item">
 								<h5>管理員</h5>
-								<select class="form-control">
+								<select id="target-helper-option" class="form-control">
 									<option style="padding-left:12px">全部管理</option>
 									<option style="padding-left:12px">林一</option>
 									<option style="padding-left:12px">吳二</option>
@@ -124,16 +98,16 @@
 							</li>
 							<li class="list-group-item">
 								<h5>時間</h5>
-								<select class="form-control">
+								<select id="target-period-option" class="form-control">
 									<option style="padding-left:12px">全部時期</option>
 									<option style="padding-left:12px">一段時期</option>
 								</select>
 								<div class="form-group">
 									<p></p>
 									<h5>選擇時間</h5>
-									<input type="text" class="form-control" placeholder="YYYY-MM-DD 開始日期">
+									<input id="target-period-from" type="text" class="form-control" placeholder="YYYY-MM-DD 開始日期">
 									<p></p>
-									<input type="text" class="form-control" placeholder="YYYY-MM-DD 結束日期">
+									<input id="target-period-to" type="text" class="form-control" placeholder="YYYY-MM-DD 結束日期">
 									<!-- <select class="form-control" style="max-width: 30%">
 										<option style="padding-left:12px">請選擇分組週期...</option>
 										<option style="padding-left:12px">每週</option>
@@ -148,20 +122,20 @@
 					<hr />
 					<div class="form-group">
 						<label class="control-label" for="formInput87">於以上範圍想要比較的對象</label>
-						<select class="form-control noel-select-group">
+						<select id="between-option" class="form-control noel-select-group">
 							<option>各小站</option>
 							<option>各管理員</option>
 							<option>各按摩師</option>
 							<option>各時期</option>
 						</select>
-						<div class="form-group noel-select-group">
+						<div id="if-between-option-is-period" class="form-group noel-select-group">
 							<p></p>
 							<h5>選擇時間</h5>
-							<input type="text" class="form-control" placeholder="YYYY-MM-DD 開始日期">
+							<input id="between-period-from" type="text" class="form-control" placeholder="YYYY-MM-DD 開始日期">
 							<p></p>
-							<input type="text" class="form-control" placeholder="YYYY-MM-DD 結束日期">
+							<input id="between-period-to" type="text" class="form-control" placeholder="YYYY-MM-DD 結束日期">
 							<p></p>
-							<select class="form-control" style="max-width: 30%">
+							<select id="between-period-step" class="form-control" style="max-width: 30%">
 								<option style="padding-left:12px">請選擇分組週期...</option>
 								<option style="padding-left:12px">每週</option>
 								<option style="padding-left:12px">每月</option>
@@ -173,11 +147,12 @@
 					<hr />
 					<div class="form-group">
 						<label class="control-label" for="formInput87">預覽產生語句</label>
-						<input type="text" class="form-control noel-select-group" placeholder="至少選擇一項欲比較屬性">
+						<input id="query preview" type="text" class="form-control noel-select-group" placeholder="於上方選擇至少一項欲比較屬性">
 					</div>
 					<hr />
-					<button type="submit" class="btn">繪製</button>
 				</form>
+				<button id="render-button" class="btn">繪製</button>
+				<hr />
 				<img src="./2.png" width="90%" />
 			</div>
 		</div>
