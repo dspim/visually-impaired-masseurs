@@ -66,7 +66,7 @@ def query(compares, targets, between, by, chartMode, barMode):
     elif between == "helper":
         for helper in target_helpers:
             hid = helper[0]
-            dataList.append((helper[1],filter(lambda x: x[2] == hid ,worklogs)))
+            dataList.append((helper[1],filter(lambda x: x[2] == mid ,worklogs)))
     elif between == "shop":
         for shop in target_shops:
             sid = shop[0]
@@ -103,6 +103,7 @@ def query(compares, targets, between, by, chartMode, barMode):
     data = []
     layout = None
     table = {"assigned":4, "not_assigned": 5, "guest": 6}
+    chineseName = {"assigned":"指定", "not_assigned": "未指定", "guest": "來客數"}
     if timeSeriesPlot:
         # line chart
         daynum = fromDate - toDate
