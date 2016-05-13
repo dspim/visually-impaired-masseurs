@@ -73,27 +73,27 @@
 								<h5>小站</h5>
 								<select id="target-shop-option" class="form-control">
 									<option style="padding-left:12px">全部小站</option>
-									<option style="padding-left:12px">公館</option>
+									<!-- <option style="padding-left:12px">公館</option>
 									<option style="padding-left:12px">國泰</option>
-									<option style="padding-left:12px">中正</option>
+									<option style="padding-left:12px">中正</option> -->
 								</select>
 							</li>
 							<li class="list-group-item">
 								<h5>按摩師</h5>
 								<select id="target-masseur-option" class="form-control">
 									<option style="padding-left:12px">全部按摩師</option>
-									<option style="padding-left:12px">王一</option>
+									<!-- <option style="padding-left:12px">王一</option>
 									<option style="padding-left:12px">李二</option>
-									<option style="padding-left:12px">陳三</option>
+									<option style="padding-left:12px">陳三</option> -->
 								</select>
 							</li>
 							<li class="list-group-item">
 								<h5>管理員</h5>
 								<select id="target-helper-option" class="form-control">
 									<option style="padding-left:12px">全部管理</option>
-									<option style="padding-left:12px">林一</option>
+									<!-- <option style="padding-left:12px">林一</option>
 									<option style="padding-left:12px">吳二</option>
-									<option style="padding-left:12px">張三</option>
+									<option style="padding-left:12px">張三</option> -->
 								</select>
 							</li>
 							<li class="list-group-item">
@@ -123,10 +123,10 @@
 					<div class="form-group">
 						<label class="control-label" for="formInput87">於以上範圍想要比較的對象</label>
 						<select id="between-option" class="form-control noel-select-group">
-							<option>各小站</option>
-							<option>各管理員</option>
-							<option>各按摩師</option>
-							<option>各時期</option>
+							<option id="between-option-shop">各小站</option>
+							<option id="between-option-helper">各管理員</option>
+							<option id="between-option-masseur">各按摩師</option>
+							<option id="between-option-period">各時期</option>
 						</select>
 						<div id="if-between-option-is-period" class="form-group noel-select-group" style="display:none">
 							<p></p>
@@ -160,6 +160,7 @@
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="assets/js/ie10-viewport-bug-workaround.js"></script>
 	<script src="assets/js/dashboard.js"></script>
+	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </body>
 
 </html>

@@ -12,7 +12,7 @@ compare_options.push({
 });
 compare_options.push({
 	dom: compare_option_guest_num,
-	name: 'guest_num'
+	name: 'guest'
 });
 
 var target_shop_option = $('#target-shop-option');
@@ -32,13 +32,39 @@ var between_period_step = $('#between-period-step');
 
 var query_preview = $('#query-preview');
 
+var render_button = $('#render-button');
 var render_zone = $('#render-zone');
 
+target_shop_option.on('change', function() {
+	if (!target_shop_option.val().includes('全部')) {
+		$('#between-option-shop').hide(0);
+	} else {
+		$('#between-option-shop').show(0);
+	}
+});
+
+target_masseur_option.on('change', function() {
+	if (!target_masseur_option.val().includes('全部')) {
+		$('#between-option-masseur').hide(0);
+	} else {
+		$('#between-option-masseur').show(0);
+	}
+});
+
+target_helper_option.on('change', function() {
+	if (!target_helper_option.val().includes('全部')) {
+		$('#between-option-helper').hide(0);
+	} else {
+		$('#between-option-helper').show(0);
+	}
+});
 
 target_period_option.on('change', function () {
 	if (target_period_option.val() === '一段時期') {
+		$('#between-option-period').hide(0);
 		if_target_period_option_is_not_all.show(500);
 	} else {
+		$('#between-option-period').show(0);
 		if_target_period_option_is_not_all.hide(500);
 	}
 });
@@ -51,7 +77,7 @@ between_option.on('change', function () {
 	}
 });
 
-
+var _arguments = '';
 var gen_query_preview = function () {
 	var real_compare_options = compare_options.filter(o => o.dom.prop('checked')).map(o => o.name);
 
@@ -102,7 +128,6 @@ var gen_query_preview = function () {
 	//   --barMode BARMODE    Select one bar char mode , including stack,group. ex.:
 	//                        --by sum
 
-	var _arguments = '';
 	if (real_compare_options.length > 0) {
 		_arguments += ' --compare ' + real_compare_options.join(',');
 	}
@@ -151,3 +176,48 @@ var gen_query_preview = function () {
 
 	console.log(_arguments);
 };
+
+$.get('../api/shop', function (data) {
+	console.log(data);
+	data.map(o => o.sname)
+		.forEach(n => {
+			target_shop_option.append('<option style="padding-left:12px">' + n + '</option>');
+		});
+});
+$.get('../api/masseur', function (data) {
+	console.log(data);
+	data.map(o => o.mname)
+		.forEach(n => {
+			target_masseur_option.append('<option style="padding-left:12px">' + n + '</option>');
+		});
+});
+$.get('../api/helper', function (data) {
+	console.log(data);
+	data.map(o => o.hname)
+		.forEach(n => {
+			target_helper_option.append('<option style="padding-left:12px">' + n + '</option>');
+		});
+});
+
+render_button.on('click', function () {
+	render_zone.html('<p>載入中...</p>');
+	gen_query_preview();
+	$.ajax({
+			url: 'http://localhost:8000/api/py/index.php?arg=' + _arguments,
+			type: 'GET'
+				// crossDomain: true,
+				// success: function (response) {
+				// 	console.log(response);
+				// }
+		})
+		.done(function (data) {
+			console.log(data);
+			var dom_data = data.split('<script type="text/javascript">')[0];
+			var script_data = data.split('<script type="text/javascript">')[1].split('</script>')[0];
+
+			render_zone.html(dom_data);
+			setTimeout(() => {
+				eval(script_data);
+			}, 10);
+		});
+});
