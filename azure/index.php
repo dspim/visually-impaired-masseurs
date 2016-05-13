@@ -38,6 +38,9 @@
     .ww {
         width: 200px;
     }
+    .mato {
+        margin-top: 100px;
+    }
 </style>
 </head>
 <body>
@@ -209,7 +212,7 @@ $total_pages = ceil($total_records/$pageRow_records);
 ?>
 
 <!-- show page -->
-<table border="0" align="center">
+<table border="0" class="mato" align="center">
 <tr>
 <td>共 <?php echo $total ?> 筆資料</td>
 <td>

@@ -108,7 +108,13 @@ if(isset($_POST['submit']))
 	}
 
 	$ch = $array[0][0];	
-		if ($ch === "小站") {
+	$da = $array[0][1];
+	$ma = $array[0][2];
+	$as = $array[0][3];
+	$nas = $array[0][4];
+	$gu = $array[0][5];
+	$he = $array[0][6];
+		if ($ch === "小站" || $da === "日期" || $ma === "師傅"|| $as === "指定節數"|| $nas === "未指定節數"|| $gu === "來客數" || $he === "管理員") {
 			// echo "ok";
 
 			print "<div class='warning'>請確認資訊如下：\n" . 
@@ -158,15 +164,18 @@ if(isset($_POST['submit']))
 			for($i=1;$i<=$n;$i++){
 
 			$sidd = $array[$i][0];
-			$sid = substr($sidd, 0, 1);
+			$sspace = strpos($sidd, " ");
+			$sid = substr($sidd, 0, $sspace);
 			$log_date = $array[$i][1];
 			$midd = $array[$i][2];
-			$mid = substr($midd, 0, 1);
+			$mspace = strpos($midd, " ");
+			$mid = substr($midd, 0, $mspace);
 			$assigned = $array[$i][3];
 			$not_assigned = $array[$i][4];
 			$guest_num = $array[$i][5];
 			$hidd = $array[$i][6];
-			$hid = substr($hidd, 0, 1);
+			$hspace = strpos($hidd, " ");
+			$hid = substr($hidd, 0, $hspace);
 
 			
 			$sql_check = "INSERT INTO worklog (log_date, mid, assigned, not_assigned, hid, guest_num, sid) VALUES (?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE sid=?, hid=?, guest_num=?, assigned=?, not_assigned=?";
