@@ -1,3 +1,4 @@
+
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
@@ -33,8 +34,8 @@
 <body>
 <!-- filter page -->
 <?php  
-$conn = mysql_connect('ap-cdbr-azure-east-c.cloudapp.net','b4aa79b2c77ddc','23d314ad') or trigger_error("SQL", E_USER_ERROR);
-$db = mysql_select_db('D4SG_VIM',$conn) or trigger_error("SQL", E_USER_ERROR);
+$conn = mysql_connect('dream.cs.nccu.edu.tw:32781','root','d4sg') or trigger_error("SQL", E_USER_ERROR);
+$db = mysql_select_db('d4sg',$conn) or trigger_error("SQL", E_USER_ERROR);
 
 //預設每頁筆數
 $pageRow_records = 30;
@@ -60,6 +61,7 @@ $total_pages = ceil($total_records/$pageRow_records);
 
 <h1>按摩師傅列表
 <input class="right btn btn-default" value="管理員列表" type="button" onclick="location='helper.php'" />
+<input class="right btn btn-default" value="小站列表" type="button" onclick="location='shop.php'" />
 <input class="right btn btn-default" value="新增工作記錄" type="button" onclick="location='create_view.php'" />
 <input class="right btn btn-default" value="上傳頁面" type="button" onclick="location='upload.php'" />
 <input class="right btn btn-default" type="button" onclick="location='/'" value="回首頁" /><br>
@@ -68,13 +70,13 @@ $total_pages = ceil($total_records/$pageRow_records);
 </h1> 
 
 <?php
-    $host = "ap-cdbr-azure-east-c.cloudapp.net"; 
-    $user = "b4aa79b2c77ddc";
-    $pwd = "23d314ad";
-    $db = "D4SG_VIM";
+    $host = "dream.cs.nccu.edu.tw:32781"; 
+    $user = "root";
+    $pwd = "d4sg";
+    $db = "d4sg";
     // Connect to database.
     try {
-        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pwd);
+        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8;port=32781", $user, $pwd);
         $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
         // echo "connect";
     }
@@ -119,8 +121,8 @@ $total_pages = ceil($total_records/$pageRow_records);
         echo "<tr><td></td><td></td><td></td></tr>";
         echo "</form></table><br>";
         // read
-        echo "<table class='table table-striped'>";
         echo "<form method='post' name='frm'>";
+        echo "<table class='table table-striped'>";
         echo "<tr><th><Button class='btn btn-danger' onClick='delete_record();'>刪除</Button></th><th>編號</th>";
         echo "<th>師傅名字</th>";
         echo "</tr>";
@@ -128,10 +130,10 @@ $total_pages = ceil($total_records/$pageRow_records);
             echo "<tr><td><input class='chkbox' type='checkbox' value='".$registrant['mid']."' name='chk_m[]'></td><td>".$registrant['mid']."</td>";
             echo "<td>".$registrant['mname']."</td>";
             echo "</tr>";
-            echo "</form>";
             // echo "<td>".(($registrant['assigned']*100 + $registrant['not_assigned']*100)*1)."</td></tr>";
         }
         echo "</table>";
+        echo "</form>";
     } else {
         echo "<h3>No case is created.</h3>";
     }
@@ -156,7 +158,7 @@ for ($x = (($num_pages - $range) - 1); $x < (($num_pages + $range) + 1); $x++) {
         if ($x == $num_pages) {
             echo " [<b>".$x."</b>] ";
         } else {
-            echo " <a href=index.php?page=".$x.">".$x."</a> ";
+            echo " <a href=masseur.php?page=".$x.">".$x."</a> ";
         } 
     } 
 }  

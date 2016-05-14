@@ -43,8 +43,8 @@
 <body>
 <!-- filter page -->
 <?php  
-$conn = mysql_connect('ap-cdbr-azure-east-c.cloudapp.net','b4aa79b2c77ddc','23d314ad') or trigger_error("SQL", E_USER_ERROR);
-$db = mysql_select_db('D4SG_VIM',$conn) or trigger_error("SQL", E_USER_ERROR);
+$conn = mysql_connect('dream.cs.nccu.edu.tw:32781','root','d4sg') or trigger_error("SQL", E_USER_ERROR);
+$db = mysql_select_db('d4sg',$conn) or trigger_error("SQL", E_USER_ERROR);
 
 //預設每頁筆數
 $pageRow_records = 30;
@@ -75,32 +75,22 @@ $total_pages = ceil($total_records/$pageRow_records);
 <h1>工作列表
 <input class="right btn btn-default" value="管理員列表" type="button" onclick="location='helper.php'" />
 <input class="right btn btn-default" value="師傅列表" type="button" onclick="location='masseur.php'" />
+<input class="right btn btn-default" value="小站列表" type="button" onclick="location='shop.php'" />
 <input class="right btn btn-default" value="新增工作記錄" type="button" onclick="location='create_view.php'" />
 <input class="right btn btn-default" value="上傳頁面" type="button" onclick="location='upload.php'" />
 <!-- <form method="post" name="frm">
     <Button class="right btn btn-danger" onClick="delete_record();">刪除</Button>
 </form> -->
 </h1> 
-<!-- Insert registration info -->
-<!-- <p>Fill in all cases everyday, then click <strong>Submit</strong> to record.</p>
-<form method="post" action="create_view.php" enctype="multipart/form-data" >
-      小站  <input type="text" name="sid" id="sid"/></br>
-      日期  <input type="text" name="log_date" id="log_date"/></br>
-      師傅編號 <input type="text" name="mid" id="mid"/></br>
-      接待員編號 <input type="text" name="hid" id="hid"/></br>
-      指定節數 <input type="text" name="assigned" id="assigned"/></br>
-      未指定節數 <input type="text" name="not_assigned" id="not_assigned"/></br>
-      來客數 <input type="text" name="guest_num" id="guest_num"/></br>
-      <input type="submit" name="submit" value="Submit" />
-</form> -->
+
 <?php
-    $host = "ap-cdbr-azure-east-c.cloudapp.net"; 
-    $user = "b4aa79b2c77ddc";
-    $pwd = "23d314ad";
-    $db = "D4SG_VIM";
+    $host = "dream.cs.nccu.edu.tw:32781"; 
+    $user = "root";
+    $pwd = "d4sg";
+    $db = "d4sg";
     // Connect to database.
     try {
-        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pwd);
+        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8;port=32781", $user, $pwd);
         $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
         // echo "connect";
     }
@@ -108,60 +98,12 @@ $total_pages = ceil($total_records/$pageRow_records);
         die(var_dump($e));
     }
     // Insert registration info
-    if(!empty($_POST)) {
-        try {
-        	$sid = $_POST['shopid'];
-            $log_date = $_POST['log_date'];
-            $mid = $_POST['masseurid'];
-            $assigned = $_POST['assigned'];
-            $not_assigned = $_POST['not_assigned'];
-            $hid = $_POST['helpid'];
-            $guest_num = $_POST['guest_num'];
+ // here to skip 
 
-            if($sid == 0 || $mid == 0 || $hid == 0 ) {
-                echo "<script>alert('有欄位是空白'); window.location.href = '/';</script>";
-                exit;
-            }
-
-        // Insert data
-            $sql_check = "INSERT INTO worklog (log_date, mid, assigned, not_assigned, hid, guest_num, sid) VALUES (?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE sid=?, hid=?, guest_num=?, assigned=?, not_assigned=?";
-            $stmt = $conn->prepare($sql_check);
-                $stmt->bindValue(1, $log_date);
-                $stmt->bindValue(2, $mid);
-                $stmt->bindValue(3, $assigned);
-                $stmt->bindValue(4, $not_assigned);
-                $stmt->bindValue(5, $hid);
-                $stmt->bindValue(6, $guest_num);
-                $stmt->bindValue(7, $sid);
-                $stmt->bindValue(8, $sid);
-                $stmt->bindValue(9, $hid);
-                $stmt->bindValue(10, $guest_num);
-                $stmt->bindValue(11, $assigned);
-                $stmt->bindValue(12, $not_assigned);
-                $stmt->execute();
-             // echo "<script>alert('no execute'); window.location.href = '/';</script>";
-
-        }
-        catch(Exception $e) {
-            // die(var_dump($e));
-            echo "<script>alert('記錄中有欄位格式錯誤喔'); window.location.href = '/';</script>";
-        }
-
-            $sql_index = "SELECT * FROM worklog";
-            $q = $conn->query($sql_index);
-            $rows = $q->fetchAll();
-            $show = count($rows);
-            $new = ceil($show/30);
-            echo "<script>location='index.php?page=".$new."';alert('新增成功!');</script>";
-    }
 
     // Retrieve data
-    $sql_select = "SELECT w.*, h.hname, m.mname, s.sname
-    				FROM worklog as w
-    					LEFT JOIN helper as h ON w.hid = h.hid
-    						LEFT JOIN masseur as m ON w.mid = m.mid
-    							LEFT JOIN shop as s ON w.sid = s.sid
-                                    LIMIT ".$startRow_records.", ".$pageRow_records;
+    $sql_select = "SELECT w.*, h.hname, m.mname, s.sname FROM worklog as w JOIN helper as h ON w.hid = h.hid JOIN masseur as m ON w.mid = m.mid JOIN shop as s ON w.sid = s.sid ORDER BY
+  w.log_date DESC LIMIT ".$startRow_records.", ".$pageRow_records;
     $stmt = $conn->query($sql_select);
     $registrants = $stmt->fetchAll();
     if(count($registrants) > 0) {
@@ -211,31 +153,45 @@ $total_pages = ceil($total_records/$pageRow_records);
 <!-- show page -->
 <table border="0" align="center">
 <tr>
-<td>共 <?php echo $total ?> 筆資料</td>
+<?php
+    $sql_count = "SELECT w.*, h.hname, m.mname, s.sname FROM worklog as w JOIN helper as h ON w.hid = h.hid JOIN masseur as m ON w.mid = m.mid JOIN shop as s ON w.sid = s.sid";
+    $stmt_count = $conn->query($sql_count);
+    $r_count = $stmt_count->fetchAll();
+
+
+?>
+<td>共 <?php echo count($r_count) ?> 筆資料</td>
 <td>
 <?php
-$range = $total_pages; 
-if ($num_pages > 1) {
-    echo " <a href={$_SERVER['PHP_SELF']}?page=1><<</a> ";
-    $prevpage = $num_pages - 1;
-    echo " <a href={$_SERVER['PHP_SELF']}?page=".$prevpage."><</a> ";
-} 
-// 顯示當前分頁鄰近的分頁頁數
-for ($x = (($num_pages - $range) - 1); $x < (($num_pages + $range) + 1); $x++) {
-    if (($x > 0) && ($x <= $total_pages)) {
-        if ($x == $num_pages) {
-            echo " [<b>".$x."</b>] ";
-        } else {
-            echo " <a href=index.php?page=".$x.">".$x."</a> ";
-        } 
+$range = $total_pages;  
+    if ($num_pages > 1) {
+        echo " <a href={$_SERVER['PHP_SELF']}?page=1><<</a> ";
+        $prevpage = $num_pages - 1;
+        echo " <a href={$_SERVER['PHP_SELF']}?page=".$prevpage."><</a> ";
     } 
-}  
-// 如果不是最後一頁, 顯示跳往下一頁及最後一頁的連結
-if ($num_pages != $total_pages) {
-    $nextpage = $num_pages + 1;
-    echo " <a href={$_SERVER['PHP_SELF']}?page=".$nextpage.">></a> ";
-    echo " <a href={$_SERVER['PHP_SELF']}?page=".$total_pages.">>></a> ";
-} 
+    // 顯示當前分頁鄰近的分頁頁數
+        for ($x = (($num_pages - $range) - 1); $x < (($num_pages + $range) + 1); $x++) {
+            if (($x > 0) && ($x <= $total_pages)) {
+                
+                if ($x == $num_pages) {
+
+                    echo " [<b>".$x."</b>] ";
+                } else {
+                    if($x>$num_pages-5 &&$x <= $num_pages+5) {
+                       echo " <a href=index.php?page=".$x.">".$x."</a> ";
+                    } else {
+                        echo "";
+                    }
+                } 
+            } 
+        }  
+    // 如果不是最後一頁, 顯示跳往下一頁及最後一頁的連結
+    if ($num_pages != $total_pages) {
+        $nextpage = $num_pages + 1;
+        echo " <a href={$_SERVER['PHP_SELF']}?page=".$nextpage.">></a> ";
+        echo " <a href={$_SERVER['PHP_SELF']}?page=".$total_pages.">>></a> ";
+    }
+
 ?>
 </td>
 </tr>

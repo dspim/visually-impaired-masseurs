@@ -8,7 +8,7 @@
 <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </head>
 <head>
-<Title>管理員列表</Title>
+<Title>小站列表</Title>
 <style type="text/css">
     body { background-color: #fff; border-top: solid 10px #000;
         color: #333; margin: 20; padding: 20;
@@ -44,7 +44,7 @@ if (isset($_GET['page'])) {
 $num_pages = $_GET['page'];
 }
 $startRow_records = ($num_pages -1) * $pageRow_records;
-$sql_query = "SELECT * FROM helper";
+$sql_query = "SELECT * FROM shop";
 
 // filter pages    
 $rows=mysql_query($sql_query);
@@ -58,9 +58,9 @@ $total_records = mysql_num_rows($all_result);
 $total_pages = ceil($total_records/$pageRow_records);
 ?>
 
-<h1>管理員列表
+<h1>小站列表
 <input class="right btn btn-default" value="按摩師傅列表" type="button" onclick="location='masseur.php'" />
-<input class="right btn btn-default" value="小站列表" type="button" onclick="location='shop.php'" />
+<input class="right btn btn-default" value="管理員列表" type="button" onclick="location='helper.php'" />
 <input class="right btn btn-default" value="新增工作記錄" type="button" onclick="location='create_view.php'" />
 <input class="right btn btn-default" value="上傳頁面" type="button" onclick="location='upload.php'" />
 <input class="right btn btn-default" type="button" onclick="location='/'" value="回首頁" /><br>
@@ -85,50 +85,50 @@ $total_pages = ceil($total_records/$pageRow_records);
     // create a new helper
     if(!empty($_POST)) {
     	try {
-    		$hid = $_POST['hid'];
-    		$hname = $_POST['hname'];
+    		$sid = $_POST['sid'];
+    		$sname = $_POST['sname'];
 
-    		$sql_create = "INSERT INTO helper (hid, hname) VALUES (?,?) ON DUPLICATE KEY UPDATE hid=?, hname=?";
+    		$sql_create = "INSERT INTO shop (sid, sname) VALUES (?,?) ON DUPLICATE KEY UPDATE sid=?, sname=?";
 			$stmt = $conn->prepare($sql_create);
-		        $stmt->bindValue(1, $hid);
-		        $stmt->bindValue(2, $hname);
-		        $stmt->bindValue(3, $hid);
-		        $stmt->bindValue(4, $hname);
+		        $stmt->bindValue(1, $sid);
+		        $stmt->bindValue(2, $sname);
+		        $stmt->bindValue(3, $sid);
+		        $stmt->bindValue(4, $sname);
 		        $stmt->execute();
 
-		    echo "<script> alert('新增管理員：[".$hid."] ".$hname." 成功'); window.location.href = 'helper.php'; </script>";
+		    echo "<script> alert('新增小站：[".$sid."] ".$sname." 成功'); window.location.href = 'shop.php'; </script>";
     	} catch(Exception $e) {
     		// die(var_dump($e));
-    		echo "<script>alert('有欄位是空白 或是 編號不為數字'); window.location.href = 'helper.php';</script>";
+    		echo "<script>alert('有欄位是空白 或是 編號不為數字'); window.location.href = 'shop.php';</script>";
     	} 
     	
     }
 
     // Retrieve data
-    $sql_select = "SELECT * FROM helper
+    $sql_select = "SELECT * FROM shop
     		            LIMIT ".$startRow_records.", ".$pageRow_records;
     $stmt = $conn->query($sql_select);
     $registrants = $stmt->fetchAll();
     if(count($registrants) > 0) {
     	echo "<table class='table'>";
         // create
-        echo "<form method='post' action='helper.php'>";
-        echo "<tr><td><input class='form-control' type='text' name='hid' id='hid' placeholder='管員編號[限數字]' /></td>";
-        echo "<td><input class='form-control' type='text' name='hname' id='hname' placeholder='管員名字' /></td>";
+        echo "<form method='post' action='shop.php'>";
+        echo "<tr><td><input class='form-control' type='text' name='sid' id='sid' placeholder='小站編號[限數字]' /></td>";
+        echo "<td><input class='form-control' type='text' name='sname' id='sname' placeholder='小站名字' /></td>";
         echo "<td><input class='btn btn-primary' type='submit' name='submit' value='新增' /></td></tr>";
         echo "<tr><td></td><td></td><td></td></tr>";
         echo "</form></table><br>";
         // read
         echo "<form method='post' name='frm'>";
         echo "<table class='table table-striped'>";
+        
         echo "<tr><th><Button class='btn btn-danger' onClick='delete_record();'>刪除</Button></th><th>編號</th>";
-        echo "<th>管理員名字</th>";
+        echo "<th>小站名</th>";
         echo "</tr>";
         foreach($registrants as $registrant) {
-            echo "<tr><td><input class='chkbox' type='checkbox' value='".$registrant['hid']."' name='chk_h[]'></td><td>".$registrant['hid']."</td>";
-            echo "<td>".$registrant['hname']."</td>";
+            echo "<tr><td><input class='chkbox' type='checkbox' value='".$registrant['sid']."' name='chk_s[]'></td><td>".$registrant['sid']."</td>";
+            echo "<td>".$registrant['sname']."</td>";
             echo "</tr>";
-            // echo "<td>".(($registrant['assigned']*100 + $registrant['not_assigned']*100)*1)."</td></tr>";
         }
         echo "</table>";
         echo "</form>";
@@ -156,7 +156,7 @@ for ($x = (($num_pages - $range) - 1); $x < (($num_pages + $range) + 1); $x++) {
         if ($x == $num_pages) {
             echo " [<b>".$x."</b>] ";
         } else {
-            echo " <a href=helper.php?page=".$x.">".$x."</a> ";
+            echo " <a href=index.php?page=".$x.">".$x."</a> ";
         } 
     } 
 }  
@@ -177,7 +177,7 @@ $('document').ready(function() {
 
 function delete_record()
 {
-document.frm.action = "delete.php?ch=3";
+document.frm.action = "delete.php?ch=4";
 document.frm.submit();
 }
 

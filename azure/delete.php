@@ -1,12 +1,12 @@
 <?php
 
-	$host = "ap-cdbr-azure-east-c.cloudapp.net"; 
-    $user = "b4aa79b2c77ddc";
-    $pwd = "23d314ad";
-    $db = "D4SG_VIM";
+	$host = "dream.cs.nccu.edu.tw:32781"; 
+    $user = "root";
+    $pwd = "d4sg";
+    $db = "d4sg";
     // Connect to database.
     try {
-        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pwd);
+        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8;port=32781", $user, $pwd);
         $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
         // echo "connect";
     }
@@ -16,7 +16,7 @@
 header("Content-Type:text/html; charset=utf-8");
 
 $ch = $_GET['ch'];
-
+// echo $ch." ";
 switch ($ch) {
 	case 2:
 		{
@@ -30,7 +30,7 @@ switch ($ch) {
 				for($ii=0; $ii<$chk_count_m; $ii++) {
 					$del_m = $chk_m[$ii];
 					// echo $del;
-					$sql_m = "DELETE FROM masseur WHERE mid=".$del_m;
+					$sql_m = "DELETE FROM masseur WHERE mid=$del_m;DELETE FROM worklog WHERE mid=$del_m";
 					$stmt_m = $conn->query($sql_m);	
 				}
 				if($stmt_m) {
@@ -41,30 +41,53 @@ switch ($ch) {
 			}
 		}
 		break;
-	case 3:
-		{
-			// helper.php delete
-			$chk_h = $_POST['chk_h'];
-			$chk_count_h = count($chk_h);
+  case 3:
+  {
+      // helper.php delete
+      $chk = $_POST['chk_h'];
+      $chk_count = count($chk);
+      // echo $chk_count;
 
+      if($chk_count < 1) {
+        echo "<script>alert('刪除至少選一個喔！！'); window.location.href = 'helper.php'; </script>";
+      } else {
+        for($i=0; $i<$chk_count; $i++) {
+          $del = $chk[$i];
+          // echo $del;
+          $sql = "DELETE FROM helper WHERE hid=$del;DELETE FROM worklog WHERE hid=$del";
+          $stmt = $conn->query($sql); 
+        }
+        if($stmt) {
+          echo "<script> alert('$chk_count 筆資料被刪除！！'); window.location.href = 'helper.php'; </script>";
+        } else {
+          echo "<script> alert('噢噢刪除操作錯誤請重新選擇！！');window.history.back(); </script>";
+        } 
+      }
+    }
+    break;
+  case 4:
+  {
+      // shop.php delete
+      $chk = $_POST['chk_s'];
+      $chk_count = count($chk);
+      // echo $chk_count;
 
-			if($chk_count_h < 1) {
-				echo "<script>alert('刪除至少選一個喔！！'); window.location.href = 'helper.php'; </script>";
-			} else {
-				for($iii=0; $iii<$chk_count_h; $iii++) {
-					$del_h = $chk_h[$iii];
-					// echo $del;
-					$sql_h = "DELETE FROM helper WHERE hid=".$del_h;
-					$stmt_h = $conn->query($sql_h);	
-				}
-				if($stmt_h) {
-					echo "<script> alert('$chk_count_h 筆資料被刪除！！'); window.location.href = 'helper.php'; </script>";
-				} else {
-					echo "<script> alert('噢噢刪除操作錯誤請重新選擇！！');window.history.back(); </script>";
-				} 
-			}
-		}
-		break;
+      if($chk_count < 1) {
+        echo "<script>alert('刪除至少選一個喔！！'); window.location.href = 'shop.php'; </script>";
+      } else {
+        for($i=0; $i<$chk_count; $i++) {
+          $del = $chk[$i];
+          // echo $del;
+          $sql = "DELETE FROM shop WHERE sid=$del;DELETE FROM worklog WHERE sid=$del";
+          $stmt = $conn->query($sql); 
+        }
+        if($stmt) {
+          echo "<script> alert('$chk_count 筆資料被刪除！！'); window.location.href = 'shop.php'; </script>";
+        } else {
+          echo "<script> alert('噢噢刪除操作錯誤請重新選擇！！');window.history.back(); </script>";
+        } 
+      }
+    }
 	default:
 		{
 			// index.php delete

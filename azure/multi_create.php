@@ -30,13 +30,13 @@ if(isset($_POST['azure']))
             // echo $assigned . " ";
             // echo $not_assigned . " ";
 
-            $host = "ap-cdbr-azure-east-c.cloudapp.net"; 
-            $user = "b4aa79b2c77ddc";
-            $pwd = "23d314ad";
-            $db = "D4SG_VIM";
+            $host = "dream.cs.nccu.edu.tw:32781"; 
+            $user = "root";
+            $pwd = "d4sg";
+            $db = "d4sg";
             // Connect to database.
             try {
-                $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pwd);
+                $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8;port=32781", $user, $pwd);
                 $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
                 // echo "connect";
             }
@@ -71,12 +71,7 @@ if(isset($_POST['azure']))
         }
 
     }
-    $sql_index = "SELECT * FROM worklog";
-    $q = $conn->query($sql_index);
-    $rows = $q->fetchAll();
-    $show = count($rows);
-    $new = ceil($show/30);
-    echo "<script>alert('新增成功!');location='index.php?page=".$new."';</script>";
+    echo "<script>alert('新增成功!');location='/';</script>";
     
     
 }

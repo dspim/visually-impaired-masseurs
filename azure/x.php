@@ -80,7 +80,7 @@ include "conn.php";
 <div id="wrongsign"></div>
 <br><br>
 
-<form method='post' action='create_view.php'>
+<form method='post' action='x.php'>
 <table class="table table-striped">
     <tr>
         <td><input class="form-control" type="text" name="no_of_rec" maxlength="2" pattern="[0-9]+" placeholder="請輸入數字 最多二位數" /></td>
@@ -185,7 +185,7 @@ if(isset($_POST['save_mul']))
 if(isset($_POST['btn-gen-form']))
 {
  ?>
-    <form method="post" action="create_view.php">
+    <form method="post" action="x.php">
     <input type="hidden" name="total" value="<?php echo $_POST["no_of_rec"]; ?>" />
  <table class="table table-striped">
     
@@ -319,7 +319,7 @@ $(document).ready(function(){
          var masseurla=$("#masseurla"+<?=$i?>).val();
          $.ajax({
             type:"post",
-            url:'create_view_lastname.php?la='+masseurla,
+            url:'xx.php?la='+masseurla,
             data:"masseurla="+masseurla,
             success:function(data){
                   $("#masseurid"+<?=$i?>).html(data);
