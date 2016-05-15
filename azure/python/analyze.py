@@ -7,33 +7,51 @@
 
 import argparse
 import pymysql
+import itertools
 import plotly
+import calendar
 # plotly.offline.init_notebook_mode()
 from plotly.graph_objs import *
 from plotly.offline.offline import _plot_html
 from datetime import date, datetime, timedelta
 
+
+table = {"assigned":4, "not_assigned": 5, "guest": 6}
+EnglishToChinese = {"assigned":"指定節數", "not_assigned": "未指定節數", "guest": "來客數"}
+
+def apply_lambda(compares):
+    if len(compares) == 1:
+        return (lambda x, y: x + y[table[compares[0]]])
+    elif "assigned" in compares and "not_assigned" in compares:
+        return (lambda x, y: x + y[table["assigned"]] + y[table["not_assigned"]])
+def add_months(sourcedate,months):
+    month = sourcedate.month - 1 + months
+    year = int(sourcedate.year + month / 12 )
+    month = month % 12 + 1
+    day = min(sourcedate.day,calendar.monthrange(year,month)[1])
+    return date(year,month,day)
+
 def query(compares, targets, between, by, chartMode, barMode):
     # compares = ['assigned', 'not_assigned', 'guest']
     # target = {"m":"","h":"","s": "","p":""}
     # between = 'masseur'|'helper'|'shop'|'date'
-    conn = pymysql.connect(host='ap-cdbr-azure-east-c.cloudapp.net', port=3306, user='b4aa79b2c77ddc', passwd='23d314ad', db='D4SG_VIM',charset='utf8')
+    conn = pymysql.connect(host='dream.cs.nccu.edu.tw', port=32781, user='root', passwd='d4sg', db='d4sg',charset='utf8')
     cur = conn.cursor()
-    cur.execute("SELECT * FROM worklog")  
+    cur.execute("SELECT wid,mid,hid,sid,assigned,not_assigned,guest_num,log_date FROM worklog")  
     worklogs = list(cur.fetchall())
     cur.execute("SELECT * FROM masseur")
     masseurs = list(cur.fetchall())
     cur.execute("SELECT * FROM helper")
     helpers = list(cur.fetchall())
     cur.execute("SELECT * FROM shop")
-    shops = list(cur.fetchall())
-    
+    shops = list(cur.fetchall())    
     # find target 
     target_masseurs = masseurs
     target_helpers = helpers
     target_shops = shops
-    target_worklogs = None
     timeSeriesPlot = False
+    fromDate = None
+    toDate = None
     if targets["m"] != "":
         target_masseurs = filter(lambda x: x[1] == targets["m"].decode("utf-8"), target_masseurs)
         for i in target_masseurs:
@@ -46,14 +64,13 @@ def query(compares, targets, between, by, chartMode, barMode):
         target_shops = filter(lambda x: x[1] == targets["s"].decode("utf-8"), target_shops)
         for i in target_shops:
             worklogs = filter(lambda x: x[3] == i[0], worklogs)
-    fromDate = None
-    toDate = None
-    if targets["p"] != None :
+
+    if targets["p"] != None:
         timeSeriesPlot = True
         fromDate = targets["p"]["from"].date()
         toDate = targets["p"]["to"].date()
         worklogs = filter(lambda x: x[7] >= fromDate and x[7] <= toDate, worklogs)
-        
+    
 # between condition
 #     dataList = [
 #         (TARGET_NAME,[ WORKLOGS ])
@@ -62,15 +79,27 @@ def query(compares, targets, between, by, chartMode, barMode):
     if between == "masseur":
         for masseur in target_masseurs:
             mid = masseur[0]
-            dataList.append((masseur[1],filter(lambda x: x[1] == mid ,worklogs)))
+            logs = filter(lambda x: x[1] == mid ,worklogs)
+            if len(logs) == 0:
+                continue;
+            else:
+                dataList.append((masseur[1],logs))
     elif between == "helper":
         for helper in target_helpers:
             hid = helper[0]
-            dataList.append((helper[1],filter(lambda x: x[2] == mid ,worklogs)))
+            logs = filter(lambda x: x[2] == hid ,worklogs)
+            if len(logs) == 0:
+                continue;
+            else:
+                dataList.append((helper[1],logs))
     elif between == "shop":
         for shop in target_shops:
             sid = shop[0]
-            dataList.append((shop[1],filter(lambda x: x[3] == sid ,worklogs)))
+            logs = filter(lambda x: x[3] == sid ,worklogs)
+            if len(logs) == 0:
+                continue;
+            else:
+                dataList.append((shop[1],logs))
     else:
 #     for time period
 #     dataList = [
@@ -83,42 +112,54 @@ def query(compares, targets, between, by, chartMode, barMode):
             to = fromDate + step
             while to <= toDate:
                 dateRange = fromDate.strftime("%Y-%m-%d")+'至'+(to-timedelta(days=1)).strftime("%Y-%m-%d")
-                dataList.append((dateRange,filter(lambda x: x[7] >= fromDate and x[7] < to, worklogs)))
+                logs = filter(lambda x: x[7] >= fromDate and x[7] < to, worklogs)
+                if len(logs) == 0:
+                    continue;
+                else:
+                    dataList.append((dateRange,logs))
                 fromDate = to
                 to = to + step
         elif between["step"] == "month":
             while fromDate.month <= toDate.month:
                 month = fromDate.strftime("%Y年%m月")
-                dataList.append((month,filter(lambda x: x[7].month == fromDate.month,worklogs)))
+                logs = filter(lambda x: x[7].month == fromDate.month,worklogs)
+                if len(logs) == 0:
+                    continue;
+                else:
+                    dataList.append((month,logs))
                 fromDate = add_months(fromDate,1)
         elif between["step"] == "season":
             while fromDate.month <= toDate.month:
                 to = add_months(fromDate,2)
                 monthRange = fromDate.strftime("%Y年%m月") +'至'+to.strftime("%Y年%m月")
-                dataList.append((monthRange,filter(lambda x: x[7].month >= fromDate.month and x[7].month < to.month, worklogs)))
+                logs = filter(lambda x: x[7].month >= fromDate.month and x[7].month < to.month, worklogs)
+                if len(logs) == 0:
+                    continue;
+                else:
+                    dataList.append((monthRange,logs))
                 fromDate = add_months(fromDate,3)
-    # compare result and create plot
-    
     # compare result and create plot 
     data = []
     layout = None
-    table = {"assigned":4, "not_assigned": 5, "guest": 6}
-    chineseName = {"assigned":"指定", "not_assigned": "未指定", "guest": "來客數"}
     if timeSeriesPlot:
         # line chart
         daynum = fromDate - toDate
         x = [toDate + timedelta(days=num) for num in range(daynum.days, 1)]
         for name, logs in dataList:
+            y = None
+            
             if by == "sum":
-                y = [(date,reduce(lambda x, y: x + y[table["assigned"]], grp, 0)) for date, grp in itertools.groupby(logs, key=lambda x: x[7])]
+                for compare in compares:
+                    y = [(date,reduce(apply_lambda(compares), grp, 0)) for date, grp in itertools.groupby(logs, key=lambda x: x[7])]
             elif by == "count":
                 y = [(date,len(list(grp))) for date, grp in itertools.groupby(logs, key=lambda x: x[7])]
             elif by == "average":
                 y = [(date, list(grp))for date, grp in itertools.groupby(logs, key=lambda x: x[7])]
-                y = [(date,reduce(lambda x, y: x + y[table["assigned"]], grp, 0)/float(len(grp))) if len(grp) != 0 else (date, 0) for date, grp in y]
-                
+                y = [(date,reduce(apply_lambda(compares), grp, 0)/float(len(grp))) if len(grp) != 0 else (date, 0) for date, grp in y]
+            
+            
             for d in x: 
-                if not d in [d for d,v in y]:
+                if not d in [date for date,value in y]:
                     y.append((d, 0))
             y.sort(key=lambda a: a[0], reverse=False)
             trace = Scatter(
@@ -128,8 +169,11 @@ def query(compares, targets, between, by, chartMode, barMode):
             )
             data.append(trace)
         layout = dict(
+            xaxis = dict(
+                tickformat = "%Y年%m月%d日"
+            ),
             yaxis=dict(
-                title=','.join(compares),
+                title='+'.join(map(lambda x: EnglishToChinese[x], compares)),
                 titlefont=dict(
                     family='Arial, sans-serif',
                     size=14,
@@ -138,10 +182,10 @@ def query(compares, targets, between, by, chartMode, barMode):
             )
         )
         fig = Figure(data=data, layout=layout)
-#         plot_html, plotdivid, width, height = _plot_html(fig, False, "", True, '100%', 525, False)
-        plotly.offline.plot(fig)
+        plot_html, plotdivid, width, height = _plot_html(fig, False, "", True, '100%', 525, False)
+        print plot_html
+
     else:
-        # bar chart
         x = map(lambda x: x[0], dataList)
         y = {}
         for compare in compares:
@@ -167,16 +211,16 @@ def query(compares, targets, between, by, chartMode, barMode):
                     "labels":x,
                     "values":y[compare],
                     "type":"pie",
-                    "name":compare,
+                    "name":EnglishToChinese[compare],
                     "domain": {'x': [xLeft, xRight],
-                       'y': [0,1]}
+                       'y': [0,0.8]}
                 })
                 layout = {}
             elif chartMode == "bar":
                 trace = Bar(
                     x = x,
                     y = y[compare],
-                    name = compare
+                    name = EnglishToChinese[compare]
                 )
                 data.append(trace)
                 layout = Layout(
