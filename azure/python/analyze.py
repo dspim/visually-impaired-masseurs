@@ -113,30 +113,32 @@ def query(compares, targets, between, by, chartMode, barMode, sortBy):
                 dateRange = fromDate.strftime("%Y-%m-%d")+'至'+(to-timedelta(days=1)).strftime("%Y-%m-%d")
                 logs = filter(lambda x: x[7] >= fromDate and x[7] < to, worklogs)
                 if len(logs) == 0:
-                    continue;
+                    fromDate = to
+                    to = to + step
+                    continue;   
                 else:
                     dataList.append((dateRange,logs))
-                fromDate = to
-                to = to + step
+                    fromDate = to
+                    to = to + step
         elif between["step"] == "month":
             while fromDate.month <= toDate.month:
                 month = fromDate.strftime("%Y年%m月")
                 logs = filter(lambda x: x[7].month == fromDate.month,worklogs)
+                fromDate = add_months(fromDate,1)
                 if len(logs) == 0:
                     continue;
                 else:
                     dataList.append((month,logs))
-                fromDate = add_months(fromDate,1)
         elif between["step"] == "season":
             while fromDate.month <= toDate.month:
                 to = add_months(fromDate,2)
                 monthRange = fromDate.strftime("%Y年%m月") +'至'+to.strftime("%Y年%m月")
                 logs = filter(lambda x: x[7].month >= fromDate.month and x[7].month < to.month, worklogs)
+                fromDate = add_months(fromDate,3)
                 if len(logs) == 0:
                     continue;
                 else:
                     dataList.append((monthRange,logs))
-                fromDate = add_months(fromDate,3)
     # compare result and create plot 
     data = []
     layout = None
@@ -245,7 +247,7 @@ parser.add_argument("--fromDate", help="From date for target's period or between
 parser.add_argument("--toDate", help="Last date for target's period. ex.: --to 2015-04-01")
 parser.add_argument("--step", help="Select one time step format for between's period, including week, month, season. ex.: --step season", default="")
 
-parser.add_argument("--between", help="Select one between attributes, including masseur, helper, shop, period. ex.: --between masseur", default="masseur")
+parser.add_argument("--between", help="Select one between attributes, including masseur, helper, shop. ex.: --between masseur", default="masseur")
 
 parser.add_argument("--masseur", help="Target masseur Name", default="")
 parser.add_argument("--helper", help="Target helper Name", default="")
