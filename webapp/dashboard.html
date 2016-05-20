@@ -46,6 +46,8 @@
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+				<div id="render-zone"></div>
+				<hr />
 				<form role="form">
 					<div class="form-group">
 						<label class="control-label" for="formInput87">想要比較的屬性</label>
@@ -146,14 +148,49 @@
 					</div>
 					<hr />
 					<div class="form-group">
+						<label class="control-label" for="formInput87">想要表達的形式</label>
+						<ul class="list-group" style="max-width: 62%">
+							<li class="list-group-item">
+								<h5>圖形</h5>
+								<select id="rep-chart-option" class="form-control">
+									<option style="padding-left:12px">長條圖</option>
+									<option style="padding-left:12px">餅圖</option>
+								</select>
+							</li>
+							<li class="list-group-item">
+								<h5>長條圖額外設定</h5>
+								<select id="rep-bar-option" class="form-control">
+									<option style="padding-left:12px">以分組</option>
+									<option style="padding-left:12px">以堆疊</option>
+								</select>
+							</li>
+							<li class="list-group-item">
+								<h5>數值意義</h5>
+								<select id="rep-by-option" class="form-control">
+									<option style="padding-left:12px">以加總</option>
+									<option style="padding-left:12px">以資料筆數</option>
+									<option style="padding-left:12px">以平均</option>
+								</select>
+							</li>
+							<li class="list-group-item">
+								<h5>排序</h5>
+								<select id="rep-sort-option" class="form-control">
+									<option style="padding-left:12px">不用排序</option>
+									<option style="padding-left:12px">以指定節數</option>
+									<option style="padding-left:12px">以未指定節數</option>
+									<option style="padding-left:12px">以來客數</option>
+								</select>
+							</li>
+						</ul>
+					</div>
+					<hr />
+					<div class="form-group">
 						<label class="control-label" for="formInput87">預覽產生語句</label>
 						<input id="query-preview" type="text" class="form-control noel-select-group" placeholder="於上方選擇至少一項欲比較屬性及對象">
 					</div>
 					<hr />
 				</form>
 				<button id="render-button" class="btn">繪製</button>
-				<hr />
-				<div id="render-zone"></div>
 			</div>
 		</div>
 	</div>
