@@ -15,7 +15,6 @@ from plotly.graph_objs import *
 from plotly.offline.offline import _plot_html
 from datetime import date, datetime, timedelta
 
-
 table = {"assigned":4, "not_assigned": 5, "guest": 6}
 EnglishToChinese = {"assigned":"指定節數", "not_assigned": "未指定節數", "guest": "來客數"}
 
@@ -31,7 +30,7 @@ def add_months(sourcedate,months):
     day = min(sourcedate.day,calendar.monthrange(year,month)[1])
     return date(year,month,day)
 
-def query(compares, targets, between, by, chartMode, barMode):
+def query(compares, targets, between, by, chartMode, barMode, sortBy):
     # compares = ['assigned', 'not_assigned', 'guest']
     # target = {"m":"","h":"","s": "","p":""}
     # between = 'masseur'|'helper'|'shop'|'date'
@@ -186,21 +185,27 @@ def query(compares, targets, between, by, chartMode, barMode):
         print plot_html
 
     else:
-        x = map(lambda x: x[0], dataList)
-        y = {}
-        for compare in compares:
-            values = []
-            for name, logs in dataList:
+        tmp = []
+        for name, logs in dataList:
+            values = {}
+            for compare in compares:
                 if by == "sum":
-                    values.append(reduce(lambda a, b: a + b[table[compare]],logs , 0))
+                    values[compare] = reduce(lambda a, b: a + b[table[compare]],logs , 0)
                 elif by == "count":
-                    values.append(len(logs))
+                    values[compare] = len(logs)
                 elif by == "average":
                     if len(logs) != 0:
-                        values.append(reduce(lambda a, b: a + b[table[compare]],logs , 0)/float(len(logs)))
-                    else:
-                        values.append(0)
-            y[compare] = values 
+                        values[compare] = reduce(lambda a, b: a + b[table[compare]],logs , 0)/float(len(logs))
+            tmp.append((name, values))
+        # Sort List by SORTBY
+        if sortBy != None and sortBy in compares:
+            tmp = sorted(tmp, key=lambda a: a[1][sortBy], reverse=True)
+        
+        x = map(lambda x: x[0], tmp)
+        y = {}
+        for compare in compares:
+            y[compare] = map(lambda a: a[1][compare], tmp)
+            
         iterator = 0
         for compare in compares:
             iterator +=1 
@@ -248,8 +253,9 @@ parser.add_argument("--shop", help="Target shop Name", default="")
 
 parser.add_argument("--by", help="Select one aggregate argument, including sum, count, average. ex.: --by sum", default="sum")
 parser.add_argument("--chartMode", help="Select one chart mode , including bar,pie. ex.: --chartMode pie", default="bar")
-parser.add_argument("--barMode", help="Select one bar chart mode , including stack,group. ex.: --by sum", default="group")
+parser.add_argument("--barMode", help="Select one bar chart mode , including stack,group. ex.: --by group, stack", default="group")
 
+parser.add_argument("--sortBy", help="Sort bar chart by COMPARE. ex.: --sortBy assigned")
 args = parser.parse_args()
 if args.compare != None:
     compares = args.compare.split(',')
@@ -262,7 +268,7 @@ if step != "":
 elif args.fromDate != None and args.toDate != None:
     target_period = {"from":datetime.strptime(args.fromDate,"%Y-%m-%d"), "to":datetime.strptime(args.toDate,"%Y-%m-%d")}
 
-query(compares, {"m":args.masseur,"h":args.helper,"s":args.shop,"p":target_period}, between, args.by, args.chartMode, args.barMode)
+query(compares, {"m":args.masseur,"h":args.helper,"s":args.shop,"p":target_period}, between, args.by, args.chartMode, args.barMode, args.sortBy)
 
 
 # In[ ]:
