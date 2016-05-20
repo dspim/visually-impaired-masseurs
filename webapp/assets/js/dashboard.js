@@ -102,43 +102,41 @@ var gen_query_preview = function () {
 		real_between_period_step = between_period_step.val();
 	}
 
-	// usage: analyze.py [-h] [--compare COMPARE] [--fromDate FROMDATE]
-	//               [--toDate TODATE] [--step STEP] [--between BETWEEN]
-	//               [--masseur MASSEUR] [--helper HELPER] [--shop SHOP]
-	//               [--by BY] [--barMode BARMODE]
-	//
-	// Analyze
-	//
-	// optional _arguments:
-	//   -h, --help           show this help message and exit
-	//   --compare COMPARE    Compare attributes, including assigned, not_assigned,
-	//                        guest. ex.: --compare assigned,not_assigned
-	//   --fromDate FROMDATE  From date for target's period or between's period. ex.:
-	//                        --from 2015-04-01
-	//   --toDate TODATE      Last date for target's period. ex.: --to 2015-04-01
-	//   --step STEP          Select one time step format for between's period,
-	//                        including week, month, season. ex.: --step season
-	//   --between BETWEEN    Select one between attributes, including masseur,
-	//                        helper, shop, period. ex.: --between masseur
-	//   --masseur MASSEUR    Target masseur Name
-	//   --helper HELPER      Target helper Name
-	//   --shop SHOP          Target shop Name
-	//   --by BY              Select one aggregate argument, including sum, count,
-	//                        average. ex.: --by sum
-	//   --barMode BARMODE    Select one bar char mode , including stack,group. ex.:
-	//                        --by sum
+	// optional arguments:
+	//   -h, --help            show this help message and exit
+	//   --compare COMPARE     Compare attributes, including assigned, not_assigned,
+	//                         guest. ex.: --compare assigned,not_assigned
+	//   --fromDate FROMDATE   From date for target's period or between's period.
+	//                         ex.: --from 2015-04-01
+	//   --toDate TODATE       Last date for target's period. ex.: --to 2015-04-01
+	//   --step STEP           Select one time step format for between's period,
+	//                         including week, month, season. ex.: --step season
+	//   --between BETWEEN     Select one between attributes, including masseur,
+	//                         helper, shop, period. ex.: --between masseur
+	//   --masseur MASSEUR     Target masseur Name
+	//   --helper HELPER       Target helper Name
+	//   --shop SHOP           Target shop Name
+	//   --by BY               Select one aggregate argument, including sum, count,
+	//                         average. ex.: --by sum
+	//   --chartMode CHARTMODE
+	//                         Select one chart mode , including bar,pie. ex.:
+	//                         --chartMode pie
+	//   --barMode BARMODE     Select one bar chart mode , including stack,group.
+	//                         ex.: --by group, stack
+	//   --sortBy SORTBY       Sort bar chart by COMPARE. ex.: --sortBy assigned
+
 
 	if (real_compare_options.length > 0) {
 		_arguments += ' --compare ' + real_compare_options.join(',');
 	}
 	if (real_target_shop_option !== undefined) {
-		_arguments += ' --shop ' + real_target_shop_option;
+		_arguments += ' --shop ' + '\"' + real_target_shop_option + '\"';
 	}
 	if (real_target_masseur_option !== undefined) {
-		_arguments += ' --masseur ' + real_target_masseur_option;
+		_arguments += ' --masseur ' + '\"' + real_target_masseur_option + '\"';
 	}
 	if (real_target_helper_option !== undefined) {
-		_arguments += ' --helper ' + real_target_helper_option;
+		_arguments += ' --helper ' + '\"' + real_target_helper_option + '\"';
 	}
 	if (real_target_period_option !== undefined) {
 		_arguments += ' --fromDate ' + real_target_period_from + ' --toDate ' + real_target_period_to;
@@ -173,9 +171,36 @@ var gen_query_preview = function () {
 			}
 			_arguments += ' --step ' + cname;
 		}
+	} else {
+		alert('請選擇比較的對象');
+	}
+
+	// by
+	var rep_by = $('#rep-by-option').val();
+	var real_rep_by_option = (rep_by === '以加總' ? 'sum' :
+		rep_by === '以資料筆數' ? 'count' : 'average');
+	// chartMode
+	var rep_chart = $('#rep-chart-option').val();
+	var real_rep_chart_option = (rep_chart === '長條圖' ? 'bar' : 'pie');
+	// barMode
+	var rep_bar = $('#rep-bar-option').val();
+	var real_rep_bar_option = (rep_bar === '以分組' ? 'group' : 'stack');
+	// sortBy
+	var rep_sort = $('#rep-sort-option').val();
+	var real_rep_sort_option = (rep_sort === '不用排序' ? undefined :
+		rep_sort === '以指定節數' ? 'assigned' :
+		rep_sort === '以未指定節數' ? 'not_assigned' : 'guest');
+
+	_arguments += ' --by ' + real_rep_by_option;
+	_arguments += ' --chartMode ' + real_rep_chart_option;
+	_arguments += ' --barMode ' + real_rep_bar_option;
+	if (real_rep_sort_option !== undefined) {
+		_arguments += ' --sortBy ' + real_rep_sort_option;
 	}
 
 	console.log(_arguments);
+
+	$(window).scrollTop(0);
 };
 
 $.get('../api/shop', function (data) {
