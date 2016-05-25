@@ -63,9 +63,13 @@ target_period_option.on('change', function () {
 	if (target_period_option.val() === '一段時期') {
 		$('#between-option-period').hide(0);
 		if_target_period_option_is_not_all.show(500);
+
+		$('#rep-chart-option').html('<option style="padding-left:12px">線圖</option>');
 	} else {
 		$('#between-option-period').show(0);
 		if_target_period_option_is_not_all.hide(500);
+
+		$('#rep-chart-option').html('<option style="padding-left:12px">長條圖</option><option style="padding-left:12px">餅圖</option>');
 	}
 });
 
@@ -192,8 +196,10 @@ var gen_query_preview = function () {
 		rep_sort === '以未指定節數' ? 'not_assigned' : 'guest');
 
 	_arguments += ' --by ' + real_rep_by_option;
-	_arguments += ' --chartMode ' + real_rep_chart_option;
-	_arguments += ' --barMode ' + real_rep_bar_option;
+	if (rep_chart !== '線圖') {
+		_arguments += ' --chartMode ' + real_rep_chart_option;
+		_arguments += ' --barMode ' + real_rep_bar_option;
+	}
 	if (real_rep_sort_option !== undefined) {
 		_arguments += ' --sortBy ' + real_rep_sort_option;
 	}
@@ -227,10 +233,14 @@ $.get('../api/helper', function (data) {
 
 render_button.on('click', function () {
 	_arguments = '';
-	render_zone.html('<p>載入中...</p>');
 	gen_query_preview();
+	pydraw(_arguments);
+});
+
+var pydraw = function (__arguments) {
+	render_zone.html('<p>載入中...</p>');
 	$.ajax({
-			url: 'http://localhost:8000/api/py/index.php?arg=' + _arguments,
+			url: 'http://localhost:8000/api/py/index.php?arg=' + __arguments,
 			type: 'GET'
 				// crossDomain: true,
 				// success: function (response) {
@@ -238,7 +248,7 @@ render_button.on('click', function () {
 				// }
 		})
 		.done(function (data) {
-			console.log(data);
+			// console.log(data);
 			var dom_data = data.split('<script type="text/javascript">')[0];
 			var script_data = data.split('<script type="text/javascript">')[1].split('</script>')[0];
 
@@ -247,4 +257,6 @@ render_button.on('click', function () {
 				eval(script_data);
 			}, 10);
 		});
-});
+};
+
+pydraw('--compare assigned,not_assigned --fromDate 2015-01-01 --toDate 2015-06-01 --between shop --by sum');

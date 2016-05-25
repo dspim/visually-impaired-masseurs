@@ -40,9 +40,9 @@
 					<li>
 						<a href="#"><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;操作紀錄</a>
 					</li>
-					<li>
+					<!-- <li>
 						<a href="#"><span class="glyphicon glyphicon-save-file"></span>&nbsp;&nbsp;匯出報表</a>
-					</li>
+					</li> -->
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
@@ -132,8 +132,8 @@
 						<select id="between-option" class="form-control noel-select-group">
 							<option id="between-option-not">...</option>
 							<option id="between-option-shop">各小站</option>
-							<option id="between-option-helper">各管理員</option>
 							<option id="between-option-masseur">各按摩師</option>
+							<option id="between-option-helper">各管理員</option>
 							<option id="between-option-period">各時期</option>
 						</select>
 						<div id="if-between-option-is-period" class="form-group noel-select-group" style="display:none">
@@ -158,6 +158,7 @@
 							<li class="list-group-item">
 								<h5>圖形</h5>
 								<select id="rep-chart-option" class="form-control">
+									<!-- <option style="padding-left:12px">線圖</option> -->
 									<option style="padding-left:12px">長條圖</option>
 									<option style="padding-left:12px">餅圖</option>
 								</select>
@@ -190,7 +191,10 @@
 					</div>
 					<hr />
 				</form>
-				<button id="render-button" class="btn">繪製</button>
+				<div>
+					<button id="render-button" class="btn">繪製</button>
+					<button id="export-button" class="btn">匯出報表</button>
+				</div>
 			</div>
 		</div>
 	</div>

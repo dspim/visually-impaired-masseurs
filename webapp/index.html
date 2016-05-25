@@ -40,17 +40,20 @@
 					<li>
 						<a href="#"><span class="glyphicon glyphicon-time"></span>&nbsp;&nbsp;操作紀錄</a>
 					</li>
-					<li>
+					<!-- <li>
 						<a href="#"><span class="glyphicon glyphicon-save-file"></span>&nbsp;&nbsp;匯出報表</a>
-					</li>
+					</li> -->
 				</ul>
 			</div>
 			<div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-				<h2 class="page-header">各站營收趨勢</h2>
-				<img src="./1.png" width="90%" />
-				<h2 class="sub-header">按摩師資訊</h2>
-				<div class="table-responsive">
-					<table class="table table-striped">
+				<h2 class="page-header">各站營收趨勢 (當月)</h2>
+				<div id="render-zone">
+					<p>載入中...</p>
+				</div>
+				<h2 class="sub-header">按摩師資訊 (累計)</h2>
+				<div id="table-masseur" class="table-responsive">
+					<p>載入中...</p>
+					<!-- <table class="table table-striped">
 						<thead>
 							<tr>
 								<th>收入</th>
@@ -174,7 +177,7 @@
 								<td>libero</td>
 							</tr>
 						</tbody>
-					</table>
+					</table> -->
 				</div>
 			</div>
 		</div>
@@ -183,6 +186,8 @@
 	<script src="bootstrap/js/bootstrap.min.js"></script>
 	<script src="assets/js/ie10-viewport-bug-workaround.js"></script>
 	<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/lodash/4.13.1/lodash.min.js"></script>
+	<script src="assets/js/index.js"></script>
 </body>
 
 </html>
