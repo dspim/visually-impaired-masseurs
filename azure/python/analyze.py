@@ -1,7 +1,7 @@
 
 # coding: utf-8
 
-# In[3]:
+# In[2]:
 
 #!/usr/bin/python
 
@@ -16,7 +16,7 @@ from plotly.offline.offline import _plot_html
 from datetime import date, datetime, timedelta
 
 table = {"assigned":4, "not_assigned": 5, "guest": 6}
-EnglishToChinese = {"assigned":"指定節數", "not_assigned": "未指定節數", "guest": "來客數"}
+EnglishToChinese = {"assigned":"指定節數", "not_assigned": "未指定節數", "guest": "來客數", "assigned+not_assigned":"總節數"}
 
 def apply_lambda(compares):
     if len(compares) == 1:
@@ -30,7 +30,7 @@ def add_months(sourcedate,months):
     day = min(sourcedate.day,calendar.monthrange(year,month)[1])
     return date(year,month,day)
 
-def query(compares, targets, between, by, chartMode, barMode, sortBy):
+def query(compares, targets, between, by, chartMode, barMode, pieMode, sortBy):
     # compares = ['assigned', 'not_assigned', 'guest']
     # target = {"m":"","h":"","s": "","p":""}
     # between = 'masseur'|'helper'|'shop'|'date'
@@ -63,9 +63,9 @@ def query(compares, targets, between, by, chartMode, barMode, sortBy):
         target_shops = filter(lambda x: x[1] == targets["s"].decode("utf-8"), target_shops)
         for i in target_shops:
             worklogs = filter(lambda x: x[3] == i[0], worklogs)
-
     if targets["p"] != None:
-        timeSeriesPlot = True
+        if chartMode == "line":
+            timeSeriesPlot = True
         fromDate = targets["p"]["from"].date()
         toDate = targets["p"]["to"].date()
         worklogs = filter(lambda x: x[7] >= fromDate and x[7] <= toDate, worklogs)
@@ -187,6 +187,7 @@ def query(compares, targets, between, by, chartMode, barMode, sortBy):
         print plot_html
 
     else:
+        # tmp = [(TARGET_NAME,{COMPARE:[VALUES]})]
         tmp = []
         for name, logs in dataList:
             values = {}
@@ -200,39 +201,59 @@ def query(compares, targets, between, by, chartMode, barMode, sortBy):
                         values[compare] = reduce(lambda a, b: a + b[table[compare]],logs , 0)/float(len(logs))
             tmp.append((name, values))
         # Sort List by SORTBY
-        if sortBy != None and sortBy in compares:
-            tmp = sorted(tmp, key=lambda a: a[1][sortBy], reverse=True)
+        if sortBy != None:
+            if sortBy in compares:
+                tmp = sorted(tmp, key=lambda a: a[1][sortBy], reverse=True)
+            elif sortBy == "assigned+not_assigned":
+                tmp = sorted(tmp, key= lambda a: a[1]["assigned"]+a[1]["not_assigned"], reverse=True)
         
         x = map(lambda x: x[0], tmp)
         y = {}
         for compare in compares:
             y[compare] = map(lambda a: a[1][compare], tmp)
             
-        iterator = 0
-        for compare in compares:
-            iterator +=1 
-            if chartMode == "pie":
-                xLeft = float(1)/len(compares) * (iterator-1)
-                xRight = float(1)/len(compares) * iterator
+        if chartMode == "pie":
+            if pieMode == "sum" and"assigned" in compares and "not_assigned" in compares:
+                length = len(y["assigned"])
+                values = []
+                for i in range(0, length):
+                    values.append(y["assigned"][i]+y["not_assigned"][i])
                 data.append({
                     "labels":x,
-                    "values":y[compare],
+                    "values":values,
                     "type":"pie",
-                    "name":EnglishToChinese[compare],
-                    "domain": {'x': [xLeft, xRight],
-                       'y': [0,0.8]}
+                    "name":EnglishToChinese["assigned+not_assigned"],
+                    "hoverinfo":"label+percent+name"
                 })
                 layout = {}
-            elif chartMode == "bar":
+            elif pieMode == "split":
+                iterator = 0
+                for compare in compares:
+                    iterator += 1 
+                    xLeft = float(1)/len(compares) * (iterator-1)
+                    xRight = float(1)/len(compares) * iterator
+                    data.append({
+                        "labels":x,
+                        "values":y[compare],
+                        "type":"pie",
+                        "name":EnglishToChinese[compare],
+                        "domain": {'x': [xLeft, xRight],
+                           'y': [0,0.8]},
+                        "hoverinfo":"label+percent+name"
+                    })
+                layout = {}
+        elif chartMode == "bar":
+            for compare in compares:
                 trace = Bar(
                     x = x,
                     y = y[compare],
                     name = EnglishToChinese[compare]
                 )
                 data.append(trace)
-                layout = Layout(
-                    barmode= barMode
-                )
+            layout = Layout(
+                barmode= barMode
+            )
+
         fig = Figure(data=data, layout=layout)
         plot_html, plotdivid, width, height = _plot_html(fig, False, "", True, '100%', 525, False)
 #         plotly.offline.plot(fig)
@@ -240,7 +261,6 @@ def query(compares, targets, between, by, chartMode, barMode, sortBy):
     cur.close()
     conn.close()
     
-
 parser = argparse.ArgumentParser(description='Analyze ')
 parser.add_argument("--compare", help="Compare attributes, including assigned, not_assigned, guest. ex.: --compare assigned,not_assigned")
 parser.add_argument("--fromDate", help="From date for target's period or between's period. ex.: --from 2015-04-01")
@@ -254,10 +274,11 @@ parser.add_argument("--helper", help="Target helper Name", default="")
 parser.add_argument("--shop", help="Target shop Name", default="")
 
 parser.add_argument("--by", help="Select one aggregate argument, including sum, count, average. ex.: --by sum", default="sum")
-parser.add_argument("--chartMode", help="Select one chart mode , including bar,pie. ex.: --chartMode pie", default="bar")
-parser.add_argument("--barMode", help="Select one bar chart mode , including stack,group. ex.: --by group, stack", default="group")
+parser.add_argument("--chartMode", help="Select one chart mode , including bar,pie,line. ex.: --chartMode pie", default="bar")
+parser.add_argument("--barMode", help="Select one bar chart mode , including stack,group. ex.: --barMode group", default="group")
+parser.add_argument("--pieMode", help="Select one bar pie mode , including sum, split. ex.: --pieMode sum", default="sum")
 
-parser.add_argument("--sortBy", help="Sort bar chart by COMPARE. ex.: --sortBy assigned")
+parser.add_argument("--sortBy", help="Sort bar chart by COMPARE, assigned+not_assigned. ex.: --sortBy assigned+not_assigned")
 args = parser.parse_args()
 if args.compare != None:
     compares = args.compare.split(',')
@@ -270,7 +291,7 @@ if step != "":
 elif args.fromDate != None and args.toDate != None:
     target_period = {"from":datetime.strptime(args.fromDate,"%Y-%m-%d"), "to":datetime.strptime(args.toDate,"%Y-%m-%d")}
 
-query(compares, {"m":args.masseur,"h":args.helper,"s":args.shop,"p":target_period}, between, args.by, args.chartMode, args.barMode, args.sortBy)
+query(compares, {"m":args.masseur,"h":args.helper,"s":args.shop,"p":target_period}, between, args.by, args.chartMode, args.barMode, args.pieMode, args.sortBy)
 
 
 # In[ ]:
