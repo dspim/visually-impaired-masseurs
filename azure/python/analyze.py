@@ -16,7 +16,7 @@ from plotly.offline.offline import _plot_html
 from datetime import date, datetime, timedelta
 
 table = {"assigned":4, "not_assigned": 5, "guest": 6}
-EnglishToChinese = {"assigned":"指定節數", "not_assigned": "未指定節數", "guest": "來客數", "assigned+not_assigned":"總節數"}
+EnglishToChinese = {"assigned":"指定節數", "not_assigned": "未指定節數", "guest": "來客數", "assigned_not_assigned":"總節數"}
 
 def apply_lambda(compares):
     if len(compares) == 1:
@@ -204,7 +204,7 @@ def query(compares, targets, between, by, chartMode, barMode, pieMode, sortBy):
         if sortBy != None:
             if sortBy in compares:
                 tmp = sorted(tmp, key=lambda a: a[1][sortBy], reverse=True)
-            elif sortBy == "assigned+not_assigned":
+            elif sortBy == "assigned_not_assigned":
                 tmp = sorted(tmp, key= lambda a: a[1]["assigned"]+a[1]["not_assigned"], reverse=True)
         
         x = map(lambda x: x[0], tmp)
@@ -222,7 +222,7 @@ def query(compares, targets, between, by, chartMode, barMode, pieMode, sortBy):
                     "labels":x,
                     "values":values,
                     "type":"pie",
-                    "name":EnglishToChinese["assigned+not_assigned"],
+                    "name":EnglishToChinese["assigned_not_assigned"],
                     "hoverinfo":"label+percent+name"
                 })
                 layout = {}
@@ -278,7 +278,7 @@ parser.add_argument("--chartMode", help="Select one chart mode , including bar,p
 parser.add_argument("--barMode", help="Select one bar chart mode , including stack,group. ex.: --barMode group", default="group")
 parser.add_argument("--pieMode", help="Select one bar pie mode , including sum, split. ex.: --pieMode sum", default="sum")
 
-parser.add_argument("--sortBy", help="Sort bar chart by COMPARE, assigned+not_assigned. ex.: --sortBy assigned+not_assigned")
+parser.add_argument("--sortBy", help="Sort bar chart by COMPARE, assigned_not_assigned. ex.: --sortBy assigned_not_assigned")
 args = parser.parse_args()
 if args.compare != None:
     compares = args.compare.split(',')
