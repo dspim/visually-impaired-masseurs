@@ -214,7 +214,7 @@ var gen_query_preview = function () {
 		(rep_sort === '不用排序' ? undefined :
 			rep_sort === '以指定節數' ? 'assigned' :
 			rep_sort === '以未指定節數' ? 'not_assigned' :
-			rep_sort === '以指定節數+未指定節數' ? '"assigned+not_assigned"' : 'guest');
+			rep_sort === '以指定節數+未指定節數' ? '"assigned_not_assigned"' : 'guest');
 
 	_arguments += ' --by ' + real_rep_by_option;
 
