@@ -2,7 +2,7 @@ var render_zone = $('#render-zone');
 var pydraw = function (__arguments) {
 	// render_zone.html('<p>載入中...</p>');
 	$.ajax({
-			url: 'http://localhost:8000/api/py/index.php?arg=' + __arguments,
+			url: '../api/py/index.php?arg=' + __arguments,
 			type: 'GET'
 		})
 		.done(function (data) {
@@ -18,7 +18,7 @@ pydraw('--compare assigned,not_assigned --fromDate 2015-05-01 --toDate 2015-06-0
 
 var table_masseur = function () {
 	$.ajax({
-			url: 'http://localhost:8000/api/worklog',
+			url: '../api/worklog',
 			type: 'GET'
 		})
 		.done(function (data) {
@@ -39,6 +39,7 @@ var table_masseur = function () {
 						tmp.days++;
 					});
 					tmp.income = 100 * (tmp.assigned + tmp.not_assigned);
+					tmp.average = parseInt(tmp.income / tmp.days, 10);
 					return tmp;
 				})
 				.values()
@@ -49,6 +50,7 @@ var table_masseur = function () {
 			var table_dom = '<table class="table table-striped"><thead>\
 			<tr>\
 				<th>收入</th>\
+				<th>平均收入</th>\
 				<th>名字</th>\
 				<th>指定節數</th>\
 				<th>未指定節數</th>\
@@ -60,6 +62,7 @@ var table_masseur = function () {
 				.map(m => {
 					return '<tr>\
 						<th>' + m.income + '</th>\
+						<th>' + m.average + '</th>\
 						<th>' + m.mname + '</th>\
 						<th>' + m.assigned + '</th>\
 						<th>' + m.not_assigned + '</th>\

@@ -240,7 +240,7 @@ render_button.on('click', function () {
 var pydraw = function (__arguments) {
 	render_zone.html('<p>載入中...</p>');
 	$.ajax({
-			url: 'http://localhost:8000/api/py/index.php?arg=' + __arguments,
+			url: '../api/py/index.php?arg=' + __arguments,
 			type: 'GET'
 				// crossDomain: true,
 				// success: function (response) {
