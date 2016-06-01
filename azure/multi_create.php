@@ -30,13 +30,13 @@ if(isset($_POST['azure']))
             // echo $assigned . " ";
             // echo $not_assigned . " ";
 
-            $host = "dream.cs.nccu.edu.tw:32781"; 
+            $host = "dream.cs.nccu.edu.tw:32769"; 
             $user = "root";
             $pwd = "d4sg";
             $db = "d4sg";
             // Connect to database.
             try {
-                $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8;port=32781", $user, $pwd);
+                $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8;port=32769", $user, $pwd);
                 $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
                 // echo "connect";
             }

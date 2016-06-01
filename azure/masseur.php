@@ -34,7 +34,7 @@
 <body>
 <!-- filter page -->
 <?php  
-$conn = mysql_connect('dream.cs.nccu.edu.tw:32781','root','d4sg') or trigger_error("SQL", E_USER_ERROR);
+$conn = mysql_connect('dream.cs.nccu.edu.tw:32769','root','d4sg') or trigger_error("SQL", E_USER_ERROR);
 $db = mysql_select_db('d4sg',$conn) or trigger_error("SQL", E_USER_ERROR);
 
 //預設每頁筆數
@@ -70,13 +70,13 @@ $total_pages = ceil($total_records/$pageRow_records);
 </h1> 
 
 <?php
-    $host = "dream.cs.nccu.edu.tw:32781"; 
+    $host = "dream.cs.nccu.edu.tw:32769"; 
     $user = "root";
     $pwd = "d4sg";
     $db = "d4sg";
     // Connect to database.
     try {
-        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8;port=32781", $user, $pwd);
+        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8;port=32769", $user, $pwd);
         $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
         // echo "connect";
     }
