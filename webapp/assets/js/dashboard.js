@@ -278,6 +278,8 @@ var pydraw = function (__arguments) {
 			setTimeout(() => {
 				eval(script_data);
 			}, 10);
+
+			$('#render-title').text(query_preview.val());
 		});
 };
 
