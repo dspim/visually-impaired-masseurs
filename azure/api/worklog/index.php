@@ -4,13 +4,13 @@
 	header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept');
 	header("Content-type: text/json; charset=utf-8");
 
-	$host = "dream.cs.nccu.edu.tw:32769";
-    $user = "root";
-    $pwd = "d4sg";
-    $db = "d4sg";
+	$host = "104.41.179.64:3306";
+	$user = "d4sg";
+	$pwd = "d4sg";
+	$db = "d4sg_vim";
     // Connect to database.
     try {
-        $conn = new PDO( "mysql:host=$host;dbname=$db;charset=utf8;port=32769", $user, $pwd);
+        $conn = new PDO( "mysql:host=$host;dbname=$db;charset=utf8;port=3306", $user, $pwd);
         $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
     }
     catch(Exception $e){

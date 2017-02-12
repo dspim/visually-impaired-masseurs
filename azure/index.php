@@ -18,7 +18,7 @@
         font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     }
     h1, h3 {
-        margin-bottom: 30px; 
+        margin-bottom: 30px;
     }
     h3 {
         margin-top: 30px;
@@ -26,7 +26,7 @@
     }
     .right {
         float: right;
-        margin-bottom: 30px; 
+        margin-bottom: 30px;
         margin-left: 10px;
     }
     table, th {
@@ -42,9 +42,9 @@
 </head>
 <body>
 <!-- filter page -->
-<?php  
-$conn = mysql_connect('dream.cs.nccu.edu.tw:32769','root','d4sg') or trigger_error("SQL", E_USER_ERROR);
-$db = mysql_select_db('d4sg',$conn) or trigger_error("SQL", E_USER_ERROR);
+<?php
+$conn = @mysql_connect('104.41.179.64:3306','d4sg','d4sg') or trigger_error("SQL", E_USER_ERROR);
+$db = mysql_select_db('d4sg_vim',$conn) or trigger_error("SQL", E_USER_ERROR);
 
 //預設每頁筆數
 $pageRow_records = 30;
@@ -60,7 +60,7 @@ $sql_query = "SELECT w.*, h.hname, m.mname, s.sname
                         LEFT JOIN masseur as m ON w.mid = m.mid
                             LEFT JOIN shop as s ON w.sid = s.sid";
 
-// filter pages    
+// filter pages
 $rows=mysql_query($sql_query);
 $total=mysql_num_rows($rows);
 $show=ceil($total/30);
@@ -74,23 +74,23 @@ $total_pages = ceil($total_records/$pageRow_records);
 
 <h1>工作列表
 <input class="right btn btn-default" value="管理員列表" type="button" onclick="location='helper.php'" />
-<input class="right btn btn-default" value="師傅列表" type="button" onclick="location='masseur.php'" />
+<input class="right btn btn-default" value="按摩師傅列表" type="button" onclick="location='masseur.php'" />
 <input class="right btn btn-default" value="小站列表" type="button" onclick="location='shop.php'" />
 <input class="right btn btn-default" value="新增工作記錄" type="button" onclick="location='create_view.php'" />
 <input class="right btn btn-default" value="上傳頁面" type="button" onclick="location='upload.php'" />
 <!-- <form method="post" name="frm">
     <Button class="right btn btn-danger" onClick="delete_record();">刪除</Button>
 </form> -->
-</h1> 
+</h1>
 
 <?php
-    $host = "dream.cs.nccu.edu.tw:32769"; 
-    $user = "root";
-    $pwd = "d4sg";
-    $db = "d4sg";
+$host = "104.41.179.64:3306";
+$user = "d4sg";
+$pwd = "d4sg";
+$db = "d4sg_vim";
     // Connect to database.
     try {
-        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8;port=32769", $user, $pwd);
+        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8;port=3306", $user, $pwd);
         $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
         // echo "connect";
     }
@@ -98,7 +98,7 @@ $total_pages = ceil($total_records/$pageRow_records);
         die(var_dump($e));
     }
     // Insert registration info
- // here to skip 
+ // here to skip
 
 
     // Retrieve data
@@ -163,16 +163,16 @@ $total_pages = ceil($total_records/$pageRow_records);
 <td>共 <?php echo count($r_count) ?> 筆資料</td>
 <td>
 <?php
-$range = $total_pages;  
+$range = $total_pages;
     if ($num_pages > 1) {
         echo " <a href={$_SERVER['PHP_SELF']}?page=1><<</a> ";
         $prevpage = $num_pages - 1;
         echo " <a href={$_SERVER['PHP_SELF']}?page=".$prevpage."><</a> ";
-    } 
+    }
     // 顯示當前分頁鄰近的分頁頁數
         for ($x = (($num_pages - $range) - 1); $x < (($num_pages + $range) + 1); $x++) {
             if (($x > 0) && ($x <= $total_pages)) {
-                
+
                 if ($x == $num_pages) {
 
                     echo " [<b>".$x."</b>] ";
@@ -182,9 +182,9 @@ $range = $total_pages;
                     } else {
                         echo "";
                     }
-                } 
-            } 
-        }  
+                }
+            }
+        }
     // 如果不是最後一頁, 顯示跳往下一頁及最後一頁的連結
     if ($num_pages != $total_pages) {
         $nextpage = $num_pages + 1;

@@ -1,12 +1,16 @@
 <?php
 
-	$host = "dream.cs.nccu.edu.tw:32769"; 
-    $user = "root";
-    $pwd = "d4sg";
-    $db = "d4sg";
+	// $host = "dream.cs.nccu.edu.tw:32769";
+  //   $user = "root";
+  //   $pwd = "d4sg";
+  //   $db = "d4sg";
+	$host = "104.41.179.64:3306";
+	$user = "d4sg";
+	$pwd = "d4sg";
+	$db = "d4sg_vim";
     // Connect to database.
     try {
-        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8;port=32769", $user, $pwd);
+        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8;port=3306", $user, $pwd);
         $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
         // echo "connect";
     }
@@ -31,13 +35,13 @@ switch ($ch) {
 					$del_m = $chk_m[$ii];
 					// echo $del;
 					$sql_m = "DELETE FROM masseur WHERE mid=$del_m;DELETE FROM worklog WHERE mid=$del_m";
-					$stmt_m = $conn->query($sql_m);	
+					$stmt_m = $conn->query($sql_m);
 				}
 				if($stmt_m) {
 					echo "<script> alert('$chk_count_m 筆資料被刪除！！'); window.location.href = 'masseur.php'; </script>";
 				} else {
 					echo "<script> alert('噢噢刪除操作錯誤請重新選擇！！');window.history.back(); </script>";
-				} 
+				}
 			}
 		}
 		break;
@@ -55,13 +59,13 @@ switch ($ch) {
           $del = $chk[$i];
           // echo $del;
           $sql = "DELETE FROM helper WHERE hid=$del;DELETE FROM worklog WHERE hid=$del";
-          $stmt = $conn->query($sql); 
+          $stmt = $conn->query($sql);
         }
         if($stmt) {
           echo "<script> alert('$chk_count 筆資料被刪除！！'); window.location.href = 'helper.php'; </script>";
         } else {
-          echo "<script> alert('噢噢刪除操作錯誤請重新選擇！！');window.history.back(); </script>";
-        } 
+          echo "<script> alert('刪除操作錯誤請重新選擇！！');window.history.back(); </script>";
+        }
       }
     }
     break;
@@ -79,13 +83,13 @@ switch ($ch) {
           $del = $chk[$i];
           // echo $del;
           $sql = "DELETE FROM shop WHERE sid=$del;DELETE FROM worklog WHERE sid=$del";
-          $stmt = $conn->query($sql); 
+          $stmt = $conn->query($sql);
         }
         if($stmt) {
           echo "<script> alert('$chk_count 筆資料被刪除！！'); window.location.href = 'shop.php'; </script>";
         } else {
-          echo "<script> alert('噢噢刪除操作錯誤請重新選擇！！');window.history.back(); </script>";
-        } 
+          echo "<script> alert('刪除操作錯誤請重新選擇！！');window.history.back(); </script>";
+        }
       }
     }
 	default:
@@ -101,18 +105,16 @@ switch ($ch) {
 					$del = $chk[$i];
 					// echo $del;
 					$sql = "DELETE FROM worklog WHERE wid=".$del;
-					$stmt = $conn->query($sql);	
+					$stmt = $conn->query($sql);
 				}
 				if($stmt) {
 					echo "<script> alert('$chk_count 筆資料被刪除！！'); window.location.href = '/'; </script>";
 				} else {
-					echo "<script> alert('噢噢刪除操作錯誤請重新選擇！！');window.history.back(); </script>";
-				} 
+					echo "<script> alert('刪除操作錯誤請重新選擇！！');window.history.back(); </script>";
+				}
 			}
 		}
 		break;
 }
 
 ?>
-
-	

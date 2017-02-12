@@ -15,11 +15,11 @@
         font-family: "Segoe UI", Verdana, Helvetica, Sans-Serif;
     }
     h1 {
-        margin-bottom: 30px; 
+        margin-bottom: 30px;
     }
     .right {
         float: right;
-        margin-bottom: 30px; 
+        margin-bottom: 30px;
         margin-left: 10px;
     }
     table, th {
@@ -32,9 +32,9 @@
 </head>
 <body>
 <!-- filter page -->
-<?php  
-$conn = mysql_connect('dream.cs.nccu.edu.tw:32769','root','d4sg') or trigger_error("SQL", E_USER_ERROR);
-$db = mysql_select_db('d4sg',$conn) or trigger_error("SQL", E_USER_ERROR);
+<?php
+$conn = @mysql_connect('104.41.179.64:3306','d4sg','d4sg') or trigger_error("SQL", E_USER_ERROR);
+$db = mysql_select_db('d4sg_vim',$conn) or trigger_error("SQL", E_USER_ERROR);
 
 //預設每頁筆數
 $pageRow_records = 30;
@@ -46,7 +46,7 @@ $num_pages = $_GET['page'];
 $startRow_records = ($num_pages -1) * $pageRow_records;
 $sql_query = "SELECT * FROM shop";
 
-// filter pages    
+// filter pages
 $rows=mysql_query($sql_query);
 $total=mysql_num_rows($rows);
 $show=ceil($total/30);
@@ -66,16 +66,16 @@ $total_pages = ceil($total_records/$pageRow_records);
 <input class="right btn btn-default" type="button" onclick="location='/'" value="回首頁" /><br>
 
 <!-- <input class="right btn btn-default" value="刪除" type="button" onclick="location='delete.php'" /> -->
-</h1> 
+</h1>
 
 <?php
-    $host = "dream.cs.nccu.edu.tw:32769"; 
-    $user = "root";
-    $pwd = "d4sg";
-    $db = "d4sg";
+$host = "104.41.179.64:3306";
+$user = "d4sg";
+$pwd = "d4sg";
+$db = "d4sg_vim";
     // Connect to database.
     try {
-        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8;port=32769", $user, $pwd);
+        $conn = new PDO("mysql:host=$host;dbname=$db;charset=utf8;port=3306", $user, $pwd);
         $conn->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION );
         // echo "connect";
     }
@@ -100,8 +100,8 @@ $total_pages = ceil($total_records/$pageRow_records);
     	} catch(Exception $e) {
     		// die(var_dump($e));
     		echo "<script>alert('有欄位是空白 或是 編號不為數字'); window.location.href = 'shop.php';</script>";
-    	} 
-    	
+    	}
+
     }
 
     // Retrieve data
@@ -109,7 +109,7 @@ $total_pages = ceil($total_records/$pageRow_records);
     		            LIMIT ".$startRow_records.", ".$pageRow_records;
     $stmt = $conn->query($sql_select);
     $registrants = $stmt->fetchAll();
-    if(count($registrants) > 0) {
+
     	echo "<table class='table'>";
         // create
         echo "<form method='post' action='shop.php'>";
@@ -119,9 +119,10 @@ $total_pages = ceil($total_records/$pageRow_records);
         echo "<tr><td></td><td></td><td></td></tr>";
         echo "</form></table><br>";
         // read
+    if(count($registrants) > 0) {
         echo "<form method='post' name='frm'>";
         echo "<table class='table table-striped'>";
-        
+
         echo "<tr><th><Button class='btn btn-danger' onClick='delete_record();'>刪除</Button></th><th>編號</th>";
         echo "<th>小站名</th>";
         echo "</tr>";
@@ -144,12 +145,12 @@ $total_pages = ceil($total_records/$pageRow_records);
 <td>共 <?php echo $total ?> 筆資料</td>
 <td>
 <?php
-$range = $total_pages; 
+$range = $total_pages;
 if ($num_pages > 1) {
     echo " <a href={$_SERVER['PHP_SELF']}?page=1><<</a> ";
     $prevpage = $num_pages - 1;
     echo " <a href={$_SERVER['PHP_SELF']}?page=".$prevpage."><</a> ";
-} 
+}
 // 顯示當前分頁鄰近的分頁頁數
 for ($x = (($num_pages - $range) - 1); $x < (($num_pages + $range) + 1); $x++) {
     if (($x > 0) && ($x <= $total_pages)) {
@@ -157,15 +158,15 @@ for ($x = (($num_pages - $range) - 1); $x < (($num_pages + $range) + 1); $x++) {
             echo " [<b>".$x."</b>] ";
         } else {
             echo " <a href=index.php?page=".$x.">".$x."</a> ";
-        } 
-    } 
-}  
+        }
+    }
+}
 // 如果不是最後一頁, 顯示跳往下一頁及最後一頁的連結
 if ($num_pages != $total_pages) {
     $nextpage = $num_pages + 1;
     echo " <a href={$_SERVER['PHP_SELF']}?page=".$nextpage.">></a> ";
     echo " <a href={$_SERVER['PHP_SELF']}?page=".$total_pages.">>></a> ";
-} 
+}
 ?>
 </td>
 </tr>

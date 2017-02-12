@@ -31,7 +31,7 @@ $destination_folder="~/Downloads/"; //上傳檔路徑
 		text-align: center;
 	}
 	h1 {
-        margin-bottom: 30px; 
+        margin-bottom: 30px;
     }
     .mato {
     	margin-top: 30px;
@@ -42,13 +42,13 @@ $destination_folder="~/Downloads/"; //上傳檔路徑
 
 <body>
 <h1>上傳頁面</h1>
-csv 格式範例參考: <a href="https://goo.gl/Vud2hg">前往下載 EXCEL 空白格式</a>
+csv 格式範例參考: <a href="https://goo.gl/F91PxQ">前往下載 EXCEL 空白格式</a>
 <br><br>
 <table class='table table-bordered table-striped'>
     <tr><th class="ww">小站</th><th class="w">日期</th><th class="ww">按摩師傅</th>
         <th class="w">指定節數</th><th class="w">未指定節數</th><th class="w">來客數</th>
         <th class="ww">管理員</th></tr>
-    
+
     <tr>
 		<td>3 雙連</td><td>2015-04-01</td><td>1 王依</td><td>	3</td><td>6</td><td>6</td><td>2 王武</td>
     </tr>
@@ -99,7 +99,7 @@ if(isset($_POST['submit']))
 	$gl = $csvData;
 	// echo $gl;
 	$lines = explode(PHP_EOL, $csvData);
-	
+
 	$array = array();
 	foreach ($lines as $line) {
 	    $array[] = str_getcsv($line);
@@ -107,18 +107,27 @@ if(isset($_POST['submit']))
 	    $n = sizeof($lines)-1;
 	}
 
-	$ch = $array[0][0];	
+	$ch = $array[0][0];
 	$da = $array[0][1];
 	$ma = $array[0][2];
 	$as = $array[0][3];
 	$nas = $array[0][4];
 	$gu = $array[0][5];
 	$he = $array[0][6];
+
+	$ch = mb_convert_encoding($ch, "UTF-8", "BIG5");
+	$da = mb_convert_encoding($da, "UTF-8", "BIG5");
+	$ma = mb_convert_encoding($ma, "UTF-8", "BIG5");
+	$as = mb_convert_encoding($as, "UTF-8", "BIG5");
+	$nas = mb_convert_encoding($nas, "UTF-8", "BIG5");
+	$gu = mb_convert_encoding($gu, "UTF-8", "BIG5");
+	$he = mb_convert_encoding($he, "UTF-8", "BIG5");
+	echo $ch . $da .$ma .$as .$nas .$gu .$he ;
 		if ($ch === "小站" && $da === "日期" && $ma === "師傅"&& $as === "指定節數"&& $nas === "未指定節數"&& $gu === "來客數" && $he === "管理員") {
 			// echo "ok";
 
-			print "<div class='warning'>請確認資訊如下：\n" . 
-				"如有錯誤欄位請重新上傳，再點選「存入資料庫」。</div><br>" . 
+			print "<div class='warning'>請確認資訊如下：\n" .
+				"如有錯誤欄位請重新上傳，再點選「存入資料庫」。</div><br>" .
 				"<table class='table table-striped'>\n";
 			echo "<tr>";
 			echo "<th>小站</th>";
@@ -128,17 +137,17 @@ if(isset($_POST['submit']))
 			echo "<th>未指定節數</th>";
 			echo "<th>來客數</th>";
 			echo "<th>管理員</th></tr>";
-			for($i=1;$i<=$n;$i++){            
+			for($i=1;$i<=$n;$i++){
 			    echo "<tr>";
 			    for($j=0;$j<$m;$j++){
-			        echo "<td>".$array[$i][$j]."</td>";   
+			        echo "<td>".mb_convert_encoding($array[$i][$j], "UTF-8", "BIG5")."</td>";
 			    }
-			    echo "</tr>\n"; 
+			    echo "</tr>\n";
 			}
 			print "</table>";
 
 
-			
+
 			echo "<form method='post'>
 					<input name='gl' value='".$gl."' type='hidden'>
 					<input class='btn btn-default' name='fn' type='submit' value='存入資料庫' />
@@ -147,11 +156,11 @@ if(isset($_POST['submit']))
 			echo "<div> CSV 錯誤格式</div>";
 			exit;
 		}
-	
+
 } if(isset($_POST['fn'])) {
 	// echo 'isset '.$_POST['gl'];
 	$gl = $_POST['gl'];
-	try {	
+	try {
 		$lines = explode(PHP_EOL, $gl);
 		$array = array();
 		foreach ($lines as $line) {
@@ -177,7 +186,7 @@ if(isset($_POST['submit']))
 			$hspace = strpos($hidd, " ");
 			$hid = substr($hidd, 0, $hspace);
 
-			
+
 			$sql_check = "INSERT INTO worklog (log_date, mid, assigned, not_assigned, hid, guest_num, sid) VALUES (?,?,?,?,?,?,?) ON DUPLICATE KEY UPDATE sid=?, hid=?, guest_num=?, assigned=?, not_assigned=?";
 			$stmt = $conn->prepare($sql_check);
 		        $stmt->bindValue(1, $log_date);
@@ -196,7 +205,7 @@ if(isset($_POST['submit']))
 
 			// $sql_insert = "INSERT INTO worklog (log_date, mid, assigned, not_assigned, hid, guest_num, sid)
    //                 VALUES (?,?,?,?,?,?,?)";
-  		
+
 			}
 			$sql_query = "SELECT * FROM worklog";
 			$q = $conn->query($sql_query);
@@ -209,7 +218,7 @@ if(isset($_POST['submit']))
         die(var_dump($e));
         echo "<script>location='upload.php';alert('CSV 格式有錯喔，請重新上傳!');</script>";
     }
-		
+
 
 
 }
@@ -218,7 +227,7 @@ if(isset($_POST['submit']))
 
 
 <script type="text/javascript">
-	
+
 $("a").click(function(event){
 $("a").attr("target","_blank");});
 
