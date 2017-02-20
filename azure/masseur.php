@@ -34,7 +34,7 @@
 <body>
 <!-- filter page -->
 <?php
-$conn = @mysql_connect('104.41.179.64:3306','d4sg','d4sg') or trigger_error("SQL", E_USER_ERROR);
+$conn = @mysql_connect('localhost:3306','d4sg','d4sg') or trigger_error("SQL", E_USER_ERROR);
 $db = mysql_select_db('d4sg_vim',$conn) or trigger_error("SQL", E_USER_ERROR);
 
 //預設每頁筆數
@@ -70,7 +70,7 @@ $total_pages = ceil($total_records/$pageRow_records);
 </h1>
 
 <?php
-$host = "104.41.179.64:3306";
+$host = "localhost:3306";
 $user = "d4sg";
 $pwd = "d4sg";
 $db = "d4sg_vim";

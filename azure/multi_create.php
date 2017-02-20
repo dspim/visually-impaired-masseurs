@@ -30,7 +30,7 @@ if(isset($_POST['azure']))
             // echo $assigned . " ";
             // echo $not_assigned . " ";
 
-            $host = "104.41.179.64:3306";
+            $host = "localhost:3306";
             $user = "d4sg";
             $pwd = "d4sg";
             $db = "d4sg_vim";
