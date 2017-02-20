@@ -38,7 +38,7 @@ def query(compares, targets, between, by, chartMode, barMode, pieMode, sortBy, j
     # compares = ['assigned', 'not_assigned', 'guest']
     # target = {"m":"","h":"","s": "","p":""}
     # between = 'masseur'|'helper'|'shop'|'date'
-    conn = pymysql.connect(host='dream.cs.nccu.edu.tw', port=32769, user='root', passwd='d4sg', db='d4sg',charset='utf8')
+    conn = pymysql.connect(host='localhost', port=3306, user='root', passwd='d4sg', db='d4sg_vim',charset='utf8')
     cur = conn.cursor()
     cur.execute("SELECT wid,mid,hid,sid,assigned,not_assigned,guest_num,log_date FROM worklog")  
     worklogs = list(cur.fetchall())
