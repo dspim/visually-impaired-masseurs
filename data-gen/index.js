@@ -67,10 +67,10 @@ var oneMasseurWorklog = (mid, averageHepler, averageShop, averageAssigned, avera
 // MySQL connections pool
 var pool = mysql.createPool({
 	connectionLimit: 1,
-	host: 'ap-cdbr-azure-east-c.cloudapp.net',
-	database: 'D4SG_VIM',
-	user: 'b4aa79b2c77ddc',
-	password: '23d314ad'
+	host: 'localhost',
+	database: 'd4sg_vim',
+	user: 'd4sg',
+	password: 'd4sg'
 });
 
 //m, h, s, ass, nass, gn, days, datestr
