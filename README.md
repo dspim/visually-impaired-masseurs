@@ -12,6 +12,7 @@ or
 
 ## Python modules
 ``pip install pymysql -U``
+
 ``pip install -Iv plotly==1.9.10``
 
 
