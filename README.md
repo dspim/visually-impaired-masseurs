@@ -11,7 +11,8 @@ or
 ``hhvm -m s -p 8000``
 
 ## Python modules
-``pip install plotly pymysql -U``
+``pip install pymysql -U``
+``pip install -Iv plotly==1.9.10``
 
 
 ## Report Project
