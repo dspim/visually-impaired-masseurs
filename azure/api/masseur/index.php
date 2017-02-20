@@ -3,7 +3,7 @@
 	header('Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS');
 	header('Access-Control-Allow-Headers: X-Requested-With, Content-Type, Accept');
 	header("Content-type: text/json; charset=utf-8");
-	$host = "104.41.179.64:3306";
+	$host = "localhost";
 	$user = "d4sg";
 	$pwd = "d4sg";
 	$db = "d4sg_vim";
