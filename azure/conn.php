@@ -11,7 +11,7 @@
     // $user = "root";
     // $pwd = "d4sg";
     // $db = "d4sg";
-    $host = "localhost";
+    $host = "localhost:3306";
     $user = "d4sg";
     $pwd = "d4sg";
     $db = "d4sg_vim";

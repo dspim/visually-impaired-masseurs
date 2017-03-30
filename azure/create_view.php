@@ -153,8 +153,8 @@ if(isset($_POST['save_mul']))
             }
         }
 
-        echo '<tr><td>'.$i.'</td><td>'.$sname.'<td>'.$log_date.'<td>'.$mname .
-                '<td>'.$guest_num.'<td>'.$assigned.'<td>'.$not_assigned.'<td>'.$hname.'</tr>';
+        echo '<tr><td>'.$i.'</td><td>'.$sname.'</td><td>'.$log_date.'</td><td>'.$mname .
+                '</td><td>'.$assigned.'</td><td>'.$not_assigned.'</td><td>'.$guest_num.'</td><td>'.$hname.'</tr>';
 
         $string .= $sid . "," . $log_date .",".$hid.",".$mid. ",".$assigned .",".$not_assigned."," . $guest_num . ".";
 

@@ -34,7 +34,7 @@ switch ($ch) {
 				for($ii=0; $ii<$chk_count_m; $ii++) {
 					$del_m = $chk_m[$ii];
 					// echo $del;
-					$sql_m = "DELETE FROM masseur WHERE mid=$del_m;DELETE FROM worklog WHERE mid=$del_m";
+					$sql_m = "DELETE FROM masseur WHERE mid=$del_m";
 					$stmt_m = $conn->query($sql_m);
 				}
 				if($stmt_m) {
@@ -58,7 +58,7 @@ switch ($ch) {
         for($i=0; $i<$chk_count; $i++) {
           $del = $chk[$i];
           // echo $del;
-          $sql = "DELETE FROM helper WHERE hid=$del;DELETE FROM worklog WHERE hid=$del";
+          $sql = "DELETE FROM helper WHERE hid=$del";
           $stmt = $conn->query($sql);
         }
         if($stmt) {
@@ -82,7 +82,7 @@ switch ($ch) {
         for($i=0; $i<$chk_count; $i++) {
           $del = $chk[$i];
           // echo $del;
-          $sql = "DELETE FROM shop WHERE sid=$del;DELETE FROM worklog WHERE sid=$del";
+          $sql = "DELETE FROM shop WHERE sid=$del";
           $stmt = $conn->query($sql);
         }
         if($stmt) {
@@ -91,7 +91,9 @@ switch ($ch) {
           echo "<script> alert('刪除操作錯誤請重新選擇！！');window.history.back(); </script>";
         }
       }
+
     }
+		break;
 	default:
 		{
 			// index.php delete
